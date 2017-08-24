@@ -1,0 +1,13 @@
+/* Custom styles */
+
+.adf-Info {
+    bottom: 10px;
+    line-height: 8px;
+  }
+  
+  .adf-Logo {
+    left: auto;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }
