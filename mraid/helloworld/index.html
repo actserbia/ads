@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>Mobile Ad - test env v0.1 </title>
+
+  <!-- <link rel="stylesheet" href="custom.css" /> -->
+  <style>
+    /* Custom styles */
+
+    .adf-Info {
+      bottom: 10px;
+      line-height: 8px;
+    }
+
+    .adf-Logo {
+      left: auto;
+      position: absolute;
+      right: 15px;
+      top: 10px;
+    }
+  </style>
+  <script src="mraid.js"></script>
+</head>
+
+<body>
+  <div id="adf-banner" class="adf-Banner adf-Background adf-Border u-sizeFull">
+
+    <!-- Banner contents -->
+    <div id="adf-logo" class="adf-Logo"></div>
+    <div id="adf-info" class="adf-Info">
+      <div class="adf-Info-title">Mobile standard</div>
+      <span>320x50 px</span>
+    </div>
+    <!-- Banner contents -->
+
+  </div>
+
+  <!-- <script src="init.js"></script>  -->
+    <script>
+        /* SETS IMAGE AS BACKGROUND */
+        function setBackgroundImage(elem, background, position, size) {
+
+          if (elem) {
+            elem.style.background = 'url(' + '320x50.png' + ') no-repeat ' + (position || '50% 50%') + ' / ' + (size ||
+              'cover');
+          }
+        }
+    
+        /* REMOVES ELEMENTS WHEN IMAGE IS SET AS BACKGROUND */
+        function removeElems() {
+          [].forEach.call(arguments, function (id) {
+            var elem = document.getElementById(id);
+            elem.parentNode.removeChild(elem);
+          });
+        }
+      </script>
+
+  <!-- User code -->
+  <script>
+    (function () {
+
+      var banner = document.getElementById('adf-banner');
+      // var background = Adform.getAsset(1); // set banner background through additional asset
+
+      // banner.addEventListener('click', function () {
+      //     mraid.open(Adform.getClickURL('clickTAG'));
+      // });
+
+      // if (background) {
+        setBackgroundImage(banner);
+        removeElems('adf-logo', 'adf-info'); // ids of elements to be removed
+        banner.classList.remove('adf-Background', 'adf-Border');
+      // }
+    })();
+  </script>
+  <!-- User code -->
+</body>
+</html>
