@@ -26,6 +26,7 @@
     var clickURL = 'https://en.wikipedia.org/wiki/Online_advertising'; //wikipedia link
     var imgURL = 'http://ads.diwanee.com/mraid/helloworld/img/320x480.png';
 
+    // mraid ready
     if (mraid.getState() === 'loading') {
         mraid.addEventListener('ready', showMRAIDAd);
     } else {
@@ -37,6 +38,7 @@
             e.preventDefault();
         });
 
+        // custom close bt
         mraid.useCustomClose(true);
         document.getElementById('ASClose').addEventListener('click', function () {
             mraid.close();
@@ -46,8 +48,9 @@
         ad.addEventListener('click', function () {
             mraid.open(clickURL);
         });
+
         ad.innerHTML = '';
         ad.style.background = 'url(' + imgURL + ') no-repeat center center';
-        ad.style.backgroundSize = 'contain';
+        ad.style.backgroundSize = 'cover';
     }
 </script>
