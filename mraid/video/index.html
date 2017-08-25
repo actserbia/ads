@@ -67,14 +67,16 @@
 			var banner = document.getElementById('adf-banner');
 			var clickArea = document.getElementById('adf-click-area');
 			var video = document.getElementById('adf-video');
-			var background = Adform.getAsset(3); // set banner background through additional asset
+			var background = ""; // set banner background through additional asset
+			var clickURL = 'https://en.wikipedia.org/wiki/Online_advertising'; //wikipedia link
+
 
 			video.src = "http://ads.diwanee.com/mraid/video/video/AdformVideo_640x360_3.mp4";
 			video.poster = "http://ads.diwanee.com/mraid/video/video/Poster_Image_320x180.png";
 
 			clickArea.addEventListener('click', function () {
 				!video.paused && video.pause();
-				mraid.open(Adform.getClickURL('clickTAG'));
+				mraid.open(clickURL);
 			});
 
 			if (background) {
