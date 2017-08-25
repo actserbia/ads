@@ -1,0 +1,17 @@
+{
+    "version": "1.0",
+    "uniqueId": "3f3b7b6d31c90bfb933bc6ce8d24ae83",
+    "title": "Mobile Standard With Video_main_asset",
+    "description": "",
+    "width": 320,
+    "height": 250,
+    "events": {
+        "enabled": 0,
+        "list": {
+        }
+    },
+    "clicktags": {
+        "clickTAG": "http:\/\/www.adform.com"
+    },
+    "source": "index.html"
+}

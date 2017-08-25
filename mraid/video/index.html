@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<title>Mobile Standard With Video v.0.1</title>
+	<link rel="stylesheet" href="//s1.adform.net/banners/scripts/components/styles/Adform.Styles-1.css" />
+	<style>
+		/* Custom styles */
+
+		.adf-Logo {
+			top: 20px;
+		}
+
+		.adf-Video {
+			background: #000;
+			bottom: 0;
+			max-height: 100%;
+			width: 100%;
+		}
+
+		.adf-Video::before {
+			content: "";
+			display: block;
+			padding-top: 56.25%;
+			/* 16:9 ratio */
+		}
+	</style>
+	<script src="mraid.js"></script>
+</head>
+
+<body>
+	<div id="adf-banner" class="adf-Banner adf-Background adf-Border u-sizeFull">
+
+		<!-- Banner contents -->
+		<div id="adf-click-area" class="adf-clickArea u-sizeFull">
+			<div id="adf-logo" class="adf-Logo"></div>
+		</div>
+		<video id="adf-video" class="adf-Video u-hCentered" controls></video>
+		<!-- Banner contents -->
+
+	</div>
+
+	<script>
+		/* REUSABLE UTILITIES */
+
+		/* SETS IMAGE AS BACKGROUND */
+		function setBackgroundImage(elem, background, position, size) {
+			if (elem && background) {
+				elem.style.background = 'url(' + background + ') no-repeat ' + (position || '50% 50%') + ' / ' + (size || 'cover');
+			}
+		}
+
+		/* REMOVES ELEMENTS WHEN IMAGE IS SET AS BACKGROUND */
+		function removeElems() {
+			[].forEach.call(arguments, function (id) {
+				var elem = document.getElementById(id);
+				elem.parentNode.removeChild(elem);
+			});
+		}
+	</script>
+
+	<!-- User code -->
+	<script>
+		(function () {
+
+			var banner = document.getElementById('adf-banner');
+			var clickArea = document.getElementById('adf-click-area');
+			var video = document.getElementById('adf-video');
+			var background = Adform.getAsset(3); // set banner background through additional asset
+
+			video.src = "video/AdformVideo_640x360_3.mp4";
+			video.poster = "video/Poster_Image_320x180.png";
+
+			clickArea.addEventListener('click', function () {
+				!video.paused && video.pause();
+				mraid.open(Adform.getClickURL('clickTAG'));
+			});
+
+			if (background) {
+				setBackgroundImage(banner, background);
+				removeElems('adf-logo'); // ids of elements to be removed
+				banner.classList.remove('adf-Background', 'adf-Border');
+			}
+
+		})();
+	</script>
+</body>
+</html>
