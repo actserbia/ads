@@ -132,8 +132,14 @@
   </div>
 
   <script>
-  //mraid.setOrientationProperties
+
   (function(){
+
+    mraid.setOrientationProperties({
+      //"allowOrientationChange" : false,
+      "forceOrientation" : "portrait"
+    });
+
     if (mraid.getState() === 'loading') {
       mraid.addEventListener('ready', showMRAIDAd);
     } else {
