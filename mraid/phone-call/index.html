@@ -3,12 +3,13 @@
 <head>
 
   <script>
+    var SERVER = "http://ads.diwanee.com/mraid/phone-call/";
     clickURL = "https://www.google.com";
-    copyright = "assets/img/copyright.svg";
-    screen1Image = "assets/img/Iphone/TELEPHONE-apple.jpg";
-    btnGreen = "assets/img/Iphone/BTN-VERT.svg";
-    btnRed = "assets/img/Iphone/BTN-ROUGE.svg";
-    screen2Image = "assets/img/Iphone/TELEPHONE-apple1.jpg";
+    copyright = SERVER + "assets/img/copyright.svg";
+    screen1Image = SERVER + "assets/img/Iphone/TELEPHONE-apple.jpg";
+    btnGreen = SERVER + "assets/img/Iphone/BTN-VERT.png";
+    btnRed = SERVER + "assets/img/Iphone/BTN-ROUGE.png";
+    screen2Image = SERVER + "assets/img/Iphone/TELEPHONE-apple1.jpg";
   </script>
 
   <meta charset="UTF-8">
@@ -73,8 +74,9 @@
     width: 50%;
     text-align: center;
   }
-  .button img {
+  .button .bimg {
     width: 5rem;
+    height: 5rem;
   }
   #green {
     left: 0;
@@ -117,10 +119,10 @@
     <div id="screen1" class="full">
       <script>document.write("<div class='tapet' style='background-image:url("+ screen1Image +");'></div>");</script>
       <div id="green" class="button">
-        <script>document.write("<img src='"+ btnGreen +"'>");</script>
+        <script>document.write("<img id='bgreen' class='bimg' src='"+ btnGreen +"'>");</script>
       </div>
       <div id="red" class="button">
-        <script>document.write("<img src='"+ btnRed +"'>");</script>
+        <script>document.write("<img id='bred' class='bimg' src='"+ btnRed +"'>");</script>
       </div>
     </div>
     <div id="screen2" class="full">
@@ -148,7 +150,7 @@
         mraid.close();
       });
 
-      var buttonNext = document.getElementById('green');
+      var buttonNext = document.getElementById('bgreen');
       buttonNext.addEventListener('click', function() {
         var screen1 = document.getElementById('screen1');
         var screen2 = document.getElementById('screen2');
