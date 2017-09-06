@@ -1,181 +1,210 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-  <script>
-    var SERVER = "http://ads.diwanee.com/mraid/phone-call/";
-    clickURL = "https://www.google.com";
-    copyright = SERVER + "assets/img/copyright.svg";
-    screen1Image = SERVER + "assets/img/Iphone/TELEPHONE-apple.jpg";
-    btnGreen = SERVER + "assets/img/Iphone/BTN-VERT.png";
-    btnRed = SERVER + "assets/img/Iphone/BTN-ROUGE.png";
-    screen2Image = SERVER + "assets/img/Iphone/TELEPHONE-apple1.jpg";
-  </script>
+    <script>
+        var SERVER = "http://ads.diwanee.com/mraid/phone-call/";
+        clickURL = "https://www.google.com";
+        copyright = SERVER + "assets/img/copyright.svg";
+        screen1Image = SERVER + "assets/img/Iphone/TELEPHONE-apple.jpg";
+        btnGreen = SERVER + "assets/img/Iphone/BTN-VERT.png";
+        btnRed = SERVER + "assets/img/Iphone/BTN-ROUGE.png";
+        screen2Image = SERVER + "assets/img/Iphone/TELEPHONE-apple1.jpg";
+    </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Title of the document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title of the document</title>
 
-  <script src="mraid.js"></script>
-  <script>
-  if(location.hash==="#desk"){
-    mraid = {};
-    mraid.getState = function(){return "loaded";};
-    mraid.useCustomClose = function(){};
-    mraid.open = function(url){window.open(url);};
-    mraid.close = function(){
-      var adWrap = document.getElementById('ad-wrap');
-      adWrap.style.display = "none";
-    }
-  }
-  </script>
+    <script src="mraid.js"></script>
+    <script>
+        if (location.hash === "#desk") {
+            mraid = {};
+            mraid.getState = function() {
+                return "loaded";
+            };
+            mraid.useCustomClose = function() {};
+            mraid.open = function(url) {
+                window.open(url);
+            };
+            mraid.close = function() {
+                var adWrap = document.getElementById('ad-wrap');
+                adWrap.style.display = "none";
+            }
+        }
+    </script>
 
 
-  <style>
-  * {
-    box-sizing: border-box;
-    text-align: center;
-    font-family: sans-serif;
-  }
-  html {
-    height: 100%;
-    width: 100%;
-  }
-  body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  .centerx {
-    -ms-transform: translateX(-50%); /* IE 9 */
-    -webkit-transform: translateX(-50%); /* Safari */
-    transform: translateX(-50%);
-    position: absolute;
-    left: 50%;
-  }
-  .center {
-    -ms-transform: translate(-50%, -50%); /* IE 9 */
-    -webkit-transform: translate(-50%, -50%); /* Safari */
-    transform: translate(-50%, -50%);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-  }
-  #ad-wrap {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .button {
-    position: absolute;
-    bottom: 3rem;
-    width: 50%;
-    text-align: center;
-  }
-  .button .bimg {
-    width: 5rem;
-    height: 5rem;
-  }
-  #green {
-    left: 0;
-  }
-  #red {
-    right: 0;
-  }
-  .full {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-  }
-  .full .tapet {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  #screen1 {
-
-  }
-  #screen2 {
-    display: none;
-  }
-  #copyright {
-    position: absolute;
-    left: .3rem;
-    bottom: .3rem;
-    width: 130px;
-  }
-  </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        
+        html {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .centerx {
+            -ms-transform: translateX(-50%);
+            /* IE 9 */
+            -webkit-transform: translateX(-50%);
+            /* Safari */
+            transform: translateX(-50%);
+            position: absolute;
+            left: 50%;
+        }
+        
+        .center {
+            -ms-transform: translate(-50%, -50%);
+            /* IE 9 */
+            -webkit-transform: translate(-50%, -50%);
+            /* Safari */
+            transform: translate(-50%, -50%);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+        
+        #ad-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .button {
+            position: absolute;
+            bottom: 3rem;
+            width: 50%;
+            text-align: center;
+        }
+        
+        .button .bimg {
+            width: 5rem;
+            height: 5rem;
+        }
+        
+        #green {
+            left: 0;
+        }
+        
+        #red {
+            right: 0;
+        }
+        
+        .full {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .full .tapet {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        #screen1 {}
+        
+        #screen2 {
+            display: none;
+        }
+        
+        #copyright {
+            position: absolute;
+            left: .3rem;
+            bottom: .3rem;
+            width: 130px;
+        }
+    </style>
 
 </head>
 
 <body>
 
-  <div id="ad-wrap">
-    <div id="screen1" class="full">
-      <script>document.write("<div class='tapet' style='background-image:url("+ screen1Image +");'></div>");</script>
-      <div id="green" class="button">
-        <script>document.write("<img id='bgreen' class='bimg' src='"+ btnGreen +"'>");</script>
-      </div>
-      <div id="red" class="button">
-        <script>document.write("<img id='bred' class='bimg' src='"+ btnRed +"'>");</script>
-      </div>
+    <div id="ad-wrap">
+        <div id="screen1" class="full">
+            <script>
+                document.write("<div class='tapet' style='background-image:url(" + screen1Image + ");'></div>");
+            </script>
+            <div id="green" class="button">
+                <script>
+                    document.write("<img id='bgreen' class='bimg' src='" + btnGreen + "'>");
+                </script>
+            </div>
+            <div id="red" class="button">
+                <script>
+                    document.write("<img id='bred' class='bimg' src='" + btnRed + "'>");
+                </script>
+            </div>
+        </div>
+        <div id="screen2" class="full">
+            <script>
+                document.write("<div class='tapet' style='background-image:url(" + screen2Image + ");'></div>");
+            </script>
+        </div>
+        <script>
+            document.write("<img id='copyright' src='" + copyright + "'>");
+        </script>
     </div>
-    <div id="screen2" class="full">
-      <script>document.write("<div class='tapet' style='background-image:url("+ screen2Image +");'></div>");</script>
-    </div>
-    <script>document.write("<img id='copyright' src='"+ copyright +"'>");</script>
-  </div>
 
-  <script>
+    <script>
+        (function() {
 
-  (function(){
+            mraid.setOrientationProperties({
+                "allowOrientationChange": false
+                    // "forceOrientation" : "portrait"
+            });
 
-    mraid.setOrientationProperties({
-      //"allowOrientationChange" : false,
-      "forceOrientation" : "portrait"
-    });
+            if (mraid.getState() === 'loading') {
+                mraid.addEventListener('ready', showMRAIDAd);
+            } else {
+                showMRAIDAd();
+            }
 
-    if (mraid.getState() === 'loading') {
-      mraid.addEventListener('ready', showMRAIDAd);
-    } else {
-      showMRAIDAd();
-    }
+            function showMRAIDAd() {
+                document.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                });
 
-    function showMRAIDAd() {
-      document.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-      });
+                mraid.useCustomClose(false);
+                document.getElementById('red').addEventListener('click', function() {
+                    mraid.close();
+                });
 
-      mraid.useCustomClose(false);
-      document.getElementById('red').addEventListener('click', function() {
-        mraid.close();
-      });
+                var buttonNext = document.getElementById('bgreen');
+                buttonNext.addEventListener('click', function() {
+                    var screen1 = document.getElementById('screen1');
+                    var screen2 = document.getElementById('screen2');
+                    screen1.style.display = 'none';
+                    screen2.style.display = 'block';
+                });
 
-      var buttonNext = document.getElementById('bgreen');
-      buttonNext.addEventListener('click', function() {
-        var screen1 = document.getElementById('screen1');
-        var screen2 = document.getElementById('screen2');
-        screen1.style.display = 'none';
-        screen2.style.display = 'block';
-      });
+                var clickUrlArea = document.getElementById('screen2');
+                clickUrlArea.addEventListener('click', function() {
+                    mraid.open(clickURL);
+                });
 
-      var clickUrlArea = document.getElementById('screen2');
-      clickUrlArea.addEventListener('click', function() {
-        mraid.open(clickURL);
-      });
+                // preload for ux
+                var preloadImg = new Image();
+                preloadImg.src = screen2Image;
 
-      // preload for ux
-      var preloadImg = new Image();
-      preloadImg.src = screen2Image;
-
-    }
-  })();
-  </script>
+            }
+        })();
+    </script>
 
 </body>
 
