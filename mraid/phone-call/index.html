@@ -2,11 +2,11 @@
 <html>
 
 <head>
-  
+
   <script>
   // base url path of remote files ( used due to development )
   var SERVER = "http://ads.diwanee.com/mraid/phone-call/";
-  // SERVER = "";
+  // SERVER = ""; // <-- uncoment for local development
   // click target
   clickURL = "https://www.google.com";
   // image that contains copirights
@@ -25,6 +25,8 @@
   ];
   // how long to showing image before show next  (if multiple images are used)
   faderInterval = 2000; // ms
+  // animations
+  animGreen = "anim-scale";
   </script>
 
   <meta charset="UTF-8">
@@ -133,6 +135,24 @@
     width: 130px;
     z-index: 10;
   }
+  .anim-scale {
+    -webkit-animation: anim-scale 1s infinite;
+    -moz-animation:    anim-scale 1s infinite;
+    -o-animation:      anim-scale 1s infinite;
+    animation:         anim-scale 1s infinite;
+  }
+  @keyframes anim-scale {
+    0%, 100% {
+      -ms-transform: scale(0.98, 0.98); /* IE 9 */
+      -webkit-transform: scale(0.98, 0.98); /* Safari */
+      transform: scale(0.98, 0.98);
+    }
+    50% {
+      -ms-transform: scale(1.02, 1.02); /* IE 9 */
+      -webkit-transform: scale(1.02, 1.02); /* Safari */
+      transform: scale(1.02, 1.02);
+    }
+  }
   </style>
 
 </head>
@@ -143,7 +163,7 @@
     <div id="screen1" class="full">
       <script>document.write("<div class='tapet' style='background-image:url("+ screen1Image +");'></div>");</script>
       <div id="green" class="button">
-        <script>document.write("<img id='bgreen' class='bimg' src='"+ btnGreen +"'>");</script>
+        <script>document.write("<img id='bgreen' class='bimg "+ ((!!window.animGreen) ? animGreen : '') +"' src='"+ btnGreen +"'>");</script>
       </div>
       <div id="red" class="button">
         <script>document.write("<img id='bred' class='bimg' src='"+ btnRed +"'>");</script>
