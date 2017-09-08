@@ -23,6 +23,12 @@
     SERVER + "assets/img/Iphone/TELEPHONE-apple11.jpg",
     SERVER + "assets/img/Iphone/TELEPHONE-apple12.jpg"
   ];
+  // video (currently suports only mp4)
+  screen2Video = [
+	  "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_3vgsggr5/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4",
+    "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_cl2ku40c/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4",
+    "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_amsp2gd8/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4"
+  ]
   // how long to showing image before show next  (if multiple images are used)
   faderInterval = 2000; // ms
   // animations
@@ -135,6 +141,13 @@
     width: 130px;
     z-index: 10;
   }
+
+  #video {
+    width: 100%;
+    height: 100%;
+  }
+
+
   .anim-scale {
     -webkit-animation: anim-scale 1s infinite;
     -moz-animation:    anim-scale 1s infinite;
@@ -159,31 +172,63 @@
 
 <body>
 
-  <div id="ad-wrap">
-    <div id="screen1" class="full">
-      <script>document.write("<div class='tapet' style='background-image:url("+ screen1Image +");'></div>");</script>
-      <div id="green" class="button">
-        <script>document.write("<img id='bgreen' class='bimg "+ ((!!window.animGreen) ? animGreen : '') +"' src='"+ btnGreen +"'>");</script>
-      </div>
-      <div id="red" class="button">
-        <script>document.write("<img id='bred' class='bimg' src='"+ btnRed +"'>");</script>
-      </div>
-    </div>
-    <div id="screen2" class="full">
-      <script>
-      document.write("<div id='fader' class='full'>");
-      for (var sl=0; sl < screen2Image.length; sl++ ) {
-        document.write("<div class='tapet' style='background-image:url("+ screen2Image[sl] +");'></div>");
-      }
-      document.write("</div>");
-      </script>
-    </div>
-    <script>document.write("<img id='copyright' src='"+ copyright +"'>");</script>
-  </div>
+  <div id="ad-wrap"></div>
 
   <script>
 
   (function(){
+
+    var mode = "";
+    if (window.screen2Video && window.screen2Video[0]){
+      mode = "video";
+    }
+    else {
+      mode = "slider";
+    }
+
+    var tplScreen1 = function(){
+      var html = "";
+      html += '<div id="screen1" class="full">';
+      html += "<div class='tapet' style='background-image:url("+ screen1Image +");'></div>";
+      html += '<div id="green" class="button">';
+      html += "<img id='bgreen' class='bimg "+ ((!!window.animGreen) ? animGreen : '') +"' src='"+ btnGreen +"'>";
+      html += '</div>';
+      html += '<div id="red" class="button">';
+      html += "<img id='bred' class='bimg' src='"+ btnRed +"'>";
+      html += '</div>';
+      html += '</div>';
+      return html;
+    }
+
+    var tplScreen2 = function(){
+      var html = "";
+      html += '<div id="screen2" class="full">';
+      html += "<div id='fader' class='full'>";
+      if(mode==='video'){
+        html += "<video id='video' loop>";
+          for (var vsrc=0; vsrc < screen2Video.length; vsrc++) {
+            html += "<source src='" + screen2Video[vsrc] + "' type='video/mp4'>";
+          }
+        html += "</video>";
+      } else {
+        for (var sl=0; sl < screen2Image.length; sl++ ) {
+          html += "<div class='tapet' style='background-image:url("+ screen2Image[sl] +");'></div>";
+        }
+      }
+      html += "</div>"
+      html += '</div>';
+      return html;
+    }
+
+    var tplLayout = function(){
+      var html = "";
+      html += tplScreen1();
+      html += tplScreen2();
+      html += "<img id='copyright' src='"+ copyright +"'>";
+      return html;
+    }
+
+    document.getElementById("ad-wrap").innerHTML = tplLayout();
 
     mraid.setOrientationProperties({
       //"allowOrientationChange" : false,
@@ -194,6 +239,40 @@
       mraid.addEventListener('ready', showMRAIDAd);
     } else {
       showMRAIDAd();
+    }
+
+    var runSlider = function(){
+      var slides = document.getElementById('fader').childNodes;
+      slides[0].style.opacity = 1;
+      if (!!slides[1]) {
+        setInterval(function(){
+          for(var si = 0; si < slides.length; si++){
+            if (slides[si].style.opacity === '1'){
+              if (!!slides[si+1]){
+                setTimeout(function(){
+                  slides[si].style.opacity = 0;
+                }, faderInterval/2);
+                slides[si].style.zIndex = 0;
+                slides[si+1].style.opacity = 1;
+                slides[si+1].style.zIndex = 1;
+              }
+              else {
+                setTimeout(function(){
+                  slides[si].style.opacity = 0;
+                }, faderInterval/2);
+                slides[si].style.zIndex = 0;
+                slides[0].style.opacity = 1;
+                slides[0].style.zIndex = 1;
+              }
+              break;
+            }
+          }
+        }, faderInterval);
+      }
+    }
+
+    var runVideo = function(){
+      document.getElementById('video').play();
     }
 
     function showMRAIDAd() {
@@ -212,32 +291,11 @@
         var screen2 = document.getElementById('screen2');
         screen1.style.display = 'none';
         screen2.style.display = 'block';
-        var slides = document.getElementById('fader').childNodes;
-        slides[0].style.opacity = 1;
-        if (!!slides[1]) {
-          setInterval(function(){
-            for(var si = 0; si < slides.length; si++){
-              if (slides[si].style.opacity === '1'){
-                if (!!slides[si+1]){
-                  setTimeout(function(){
-                    slides[si].style.opacity = 0;
-                  }, faderInterval/2);
-                  slides[si].style.zIndex = 0;
-                  slides[si+1].style.opacity = 1;
-                  slides[si+1].style.zIndex = 1;
-                }
-                else {
-                  setTimeout(function(){
-                    slides[si].style.opacity = 0;
-                  }, faderInterval/2);
-                  slides[si].style.zIndex = 0;
-                  slides[0].style.opacity = 1;
-                  slides[0].style.zIndex = 1;
-                }
-                break;
-              }
-            }
-          }, faderInterval);
+        if (mode==="video") {
+          runVideo();
+        }
+        else if (mode==="slider") {
+          runSlider();
         }
       });
 
