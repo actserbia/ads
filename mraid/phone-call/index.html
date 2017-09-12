@@ -4,35 +4,52 @@
 <head>
 
   <script>
+
+
+  /* M O D E   S E L E C T O R S */ // if using `URL` please use Ad server's replace token
+  // action for red button [ "image" | "video" | `URL` ]
+  redButtonMode = "image";
+  // action for green button [ "image" | "video" | `URL` ]
+  greenButtonMode = "video";
+  // whot should happen when video ended ["loop" | "close" | "image" | `URL` ]
+  videoEnd = "https://www.google.rs/search?q=the+end&oq=the+end&gs_l=psy-ab.3..0l4.3634.4927.0.5106.7.7.0.0.0.0.78.498.7.7.0....0...1.1.64.psy-ab..0.7.496...0i46i67k1j46i67k1.pxVTS73t33I";
+  // if "image" mode is in use :: clicUrl [`url` | false]
+  imageClick = "https://www.google.rs/search?biw=1920&bih=990&q=click+on+image&oq=click+on+image&gs_l=psy-ab.3..0l4.3010.5722.0.5901.14.14.0.0.0.0.92.967.14.14.0....0...1.1.64.psy-ab..0.14.965...0i67k1.KqSPQOJ4504";
+
+
+  /* C O N T E N T */
   // base url path of remote files ( used due to development )
   var SERVER = "http://ads.diwanee.com/mraid/phone-call/";
-  // SERVER = ""; // <-- uncoment for local development
-  // click target
-  clickURL = "https://www.google.com";
-  // image that contains copirights
-  copyright = SERVER + "assets/img/copyright.svg";
-  // content image for first page
-  screen1Image = SERVER + "assets/img/Iphone/TELEPHONE-apple.jpg";
+  SERVER = ""; // <-- uncoment for local development
   // button to answer the call
-  btnGreen = SERVER + "assets/img/Iphone/BTN-VERT.png";
+  btnGreenImage = SERVER + "assets/img/Iphone/BTN-VERT.png";
   // button to decline the call
-  btnRed = SERVER + "assets/img/Iphone/BTN-ROUGE.png";
-  // content image(s) for second page (Array)
-  screen2Image = [
+  btnRedImage = SERVER + "assets/img/Iphone/BTN-ROUGE.png";
+  // content image for landing page
+  pageLanding = SERVER + "assets/img/Iphone/TELEPHONE-apple.jpg";
+  // content image(s) for image page (Array)
+  pageImage = [
     SERVER + "assets/img/Iphone/TELEPHONE-apple10.jpg",
     SERVER + "assets/img/Iphone/TELEPHONE-apple11.jpg",
     SERVER + "assets/img/Iphone/TELEPHONE-apple12.jpg"
   ];
-  // video (currently suports only mp4)
-  screen2Video = [
+  // video for video page (Array of sources, currently suports only mp4)
+  pageVideo = [
 	  "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_3vgsggr5/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4",
     "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_cl2ku40c/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4",
     "http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_lps4ezfx/flavorId/1_amsp2gd8/format/url/protocol/http/tut_nails_s01e04_pink_and_silver.mp4"
   ]
+  // image that contains copirights
+  copyright = SERVER + "assets/img/copyright.svg";
+
+
+  /* U X */
   // how long to showing image before show next  (if multiple images are used)
   faderInterval = 2000; // ms
   // animations
   animGreen = "anim-scale";
+
+
   </script>
 
   <meta charset="UTF-8">
@@ -40,6 +57,7 @@
   <title>Phone Call Creative</title>
 
   <script src="mraid.js"></script>
+
   <script>
   if(location.hash==="#desk"){
     mraid = {};
@@ -50,10 +68,10 @@
     mraid.close = function(){
       var adWrap = document.getElementById('ad-wrap');
       adWrap.style.display = "none";
+      document.body.style.backgroundColor = "blue"
     }
   }
   </script>
-
 
   <style>
   * {
@@ -91,7 +109,6 @@
     width: 100%;
     height: 100%;
   }
-
   .button {
     position: absolute;
     bottom: 3rem;
@@ -121,10 +138,12 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  #screen1 {
-
+  #page-home {
   }
-  #screen2 {
+  #page-image {
+    display: none;
+  }
+  #page-video {
     display: none;
   }
   #fader .tapet {
@@ -141,13 +160,10 @@
     width: 130px;
     z-index: 10;
   }
-
   #video {
     width: 100%;
     height: 100%;
   }
-
-
   .anim-scale {
     -webkit-animation: anim-scale 1s infinite;
     -moz-animation:    anim-scale 1s infinite;
@@ -178,43 +194,46 @@
 
   (function(){
 
-    var mode = "";
-    if (window.screen2Video && window.screen2Video[0]){
-      mode = "video";
-    }
-    else {
-      mode = "slider";
-    }
+    //
+    // T E M P L A T E S
+    //
 
-    var tplScreen1 = function(){
+    var tplPageHome = function(){
       var html = "";
-      html += '<div id="screen1" class="full">';
-      html += "<div class='tapet' style='background-image:url("+ screen1Image +");'></div>";
-      html += '<div id="green" class="button">';
-      html += "<img id='bgreen' class='bimg "+ ((!!window.animGreen) ? animGreen : '') +"' src='"+ btnGreen +"'>";
-      html += '</div>';
-      html += '<div id="red" class="button">';
-      html += "<img id='bred' class='bimg' src='"+ btnRed +"'>";
-      html += '</div>';
+      html += '<div id="page-home" class="full">';
+      html += " <div class='tapet' style='background-image:url("+ pageLanding +");'></div>";
+      html += ' <div id="green" class="button">';
+      html += "  <img id='bgreen' class='bimg "+ ((!!window.animGreen) ? animGreen : '') +"' src='"+ btnGreenImage +"'>";
+      html += ' </div>';
+      html += ' <div id="red" class="button">';
+      html += "  <img id='bred' class='bimg' src='"+ btnRedImage +"'>";
+      html += ' </div>';
       html += '</div>';
       return html;
     }
 
-    var tplScreen2 = function(){
+    var tplPageImage = function(){
       var html = "";
-      html += '<div id="screen2" class="full">';
+      html += '<div id="page-image" class="full">';
       html += "<div id='fader' class='full'>";
-      if(mode==='video'){
-        html += "<video id='video' loop>";
-          for (var vsrc=0; vsrc < screen2Video.length; vsrc++) {
-            html += "<source src='" + screen2Video[vsrc] + "' type='video/mp4'>";
-          }
-        html += "</video>";
-      } else {
-        for (var sl=0; sl < screen2Image.length; sl++ ) {
-          html += "<div class='tapet' style='background-image:url("+ screen2Image[sl] +");'></div>";
-        }
+      for (var sl=0; sl < pageImage.length; sl++ ) {
+        html += "<div class='tapet' style='background-image:url("+ pageImage[sl] +");'></div>";
       }
+      html += "</div>"
+      html += '</div>';
+      return html;
+    }
+
+    var tplPageVideo = function(){
+      var html = "";
+      html += '<div id="page-video" class="full">';
+      html += "<div id='fader' class='full'>";
+      html += "<video id='video'>";
+        for (var vsrc=0; vsrc < pageVideo.length; vsrc++) {
+          html += "<source src='" + pageVideo[vsrc] + "' type='video/mp4'>";
+        }
+      html += "</video>";
+
       html += "</div>"
       html += '</div>';
       return html;
@@ -222,25 +241,28 @@
 
     var tplLayout = function(){
       var html = "";
-      html += tplScreen1();
-      html += tplScreen2();
+      html += tplPageHome();
+      if (redButtonMode === "image" || greenButtonMode === "image" || videoEnd === "image") {
+        html += tplPageImage();
+      }
+      if (redButtonMode === "video" || greenButtonMode === "video") {
+        html += tplPageVideo();
+      }
       html += "<img id='copyright' src='"+ copyright +"'>";
       return html;
     }
 
     document.getElementById("ad-wrap").innerHTML = tplLayout();
 
-    mraid.setOrientationProperties({
-      //"allowOrientationChange" : false,
-      "forceOrientation" : "portrait"
-    });
+    //
+    // A C T I O N S
+    //
 
-    if (mraid.getState() === 'loading') {
-      mraid.addEventListener('ready', showMRAIDAd);
-    } else {
-      showMRAIDAd();
+    var preloadImg = {};
+    for (var sl=0; sl < pageImage.length; sl++ ) { // preload all images for better UX
+      preloadImg[sl] = new Image();
+      preloadImg[sl].src = pageImage[sl];
     }
-
     var runSlider = function(){
       var slides = document.getElementById('fader').childNodes;
       slides[0].style.opacity = 1;
@@ -269,49 +291,110 @@
           }
         }, faderInterval);
       }
+      if (imageClick) {
+        document.getElementById('page-image').addEventListener('click', function() {
+          mraid.open(imageClick);
+        });
+      }
+      runSlider = function(){};
     }
 
     var runVideo = function(){
-      document.getElementById('video').play();
+      var video = document.getElementById('video');
+      switch (videoEnd) {
+        case "loop":
+          video.loop = true;
+          break;
+        case "close":
+          video.onended = function() {
+            mraid.close();
+          }
+          break;
+        case "image":
+          video.onended = function() {
+            document.getElementById('page-video').style.display = 'none';
+            document.getElementById('page-image').style.display = 'block';
+            runSlider();
+          }
+          break;
+        default:
+          video.onended = function() {
+            mraid.open(videoEnd);
+          }
+      }
+      video.play();
+      runVideo = function(){};
     }
 
+    //
+    // B I N D I N G S
+    //
+
     function showMRAIDAd() {
+
       document.addEventListener('touchmove', function(e) {
         e.preventDefault();
       });
 
       mraid.useCustomClose(false);
-      document.getElementById('red').addEventListener('click', function() {
-        mraid.close();
-      });
 
-      var buttonNext = document.getElementById('bgreen');
-      buttonNext.addEventListener('click', function() {
-        var screen1 = document.getElementById('screen1');
-        var screen2 = document.getElementById('screen2');
-        screen1.style.display = 'none';
-        screen2.style.display = 'block';
-        if (mode==="video") {
-          runVideo();
+      document.getElementById('bred').addEventListener('click', function() {
+        switch (redButtonMode) {
+          case "image":
+            document.getElementById('page-home').style.display = 'none';
+            document.getElementById('page-image').style.display = 'block';
+            runSlider();
+            break;
+          case "video":
+            document.getElementById('page-home').style.display = 'none';
+            document.getElementById('page-video').style.display = 'block';
+            runVideo();
+            break;
+          case "close":
+            mraid.close();
+            break;
+          default: // `URL`
+            mraid.open(redButtonMode);
         }
-        else if (mode==="slider") {
-          runSlider();
+      });
+
+      document.getElementById('bgreen').addEventListener('click', function() {
+        switch (greenButtonMode) {
+          case "image":
+            document.getElementById('page-home').style.display = 'none';
+            document.getElementById('page-image').style.display = 'block';
+            runSlider();
+            break;
+          case "video":
+            document.getElementById('page-home').style.display = 'none';
+            document.getElementById('page-video').style.display = 'block';
+            runVideo();
+            break;
+          case "close":
+            mraid.close();
+            break;
+          default: // `URL`
+            mraid.open(redButtonMode);
         }
       });
-
-      var clickUrlArea = document.getElementById('screen2');
-      clickUrlArea.addEventListener('click', function() {
-        mraid.open(clickURL);
-      });
-
-      // preload for ux
-      var preloadImg = {};
-      for (var sl=0; sl < screen2Image.length; sl++ ) {
-        preloadImg[sl] = new Image();
-        preloadImg[sl].src = screen2Image[sl];
-      }
 
     }
+
+    //
+    // M R A I D
+    //
+
+    mraid.setOrientationProperties({
+      //"allowOrientationChange" : false,
+      "forceOrientation" : "portrait"
+    });
+
+    if (mraid.getState() === 'loading') {
+      mraid.addEventListener('ready', showMRAIDAd);
+    } else {
+      showMRAIDAd();
+    }
+
   })();
   </script>
 
