@@ -13,7 +13,9 @@
   greenButtonMode = "video";
   // whot should happen when video ended ["loop" | "close" | "image" | `URL` ]
   videoEnd = "https://www.google.rs/search?q=the+end&oq=the+end&gs_l=psy-ab.3..0l4.3634.4927.0.5106.7.7.0.0.0.0.78.498.7.7.0....0...1.1.64.psy-ab..0.7.496...0i46i67k1j46i67k1.pxVTS73t33I";
-  // if "image" mode is in use :: clicUrl [`url` | false]
+  // page video click action :: clicUrl [`url` | false]
+  videoClick = false;
+  // plage image click action :: clicUrl [`url` | false]
   imageClick = "https://www.google.rs/search?biw=1920&bih=990&q=click+on+image&oq=click+on+image&gs_l=psy-ab.3..0l4.3010.5722.0.5901.14.14.0.0.0.0.92.967.14.14.0....0...1.1.64.psy-ab..0.14.965...0i67k1.KqSPQOJ4504";
 
 
@@ -301,6 +303,14 @@
 
     var runVideo = function(){
       var video = document.getElementById('video');
+      switch (videoClick) {
+        case false:
+          break;
+        default:
+          document.getElementById('video').addEventListener('click', function() {
+            mraid.open(videoClick);
+          });
+      }
       switch (videoEnd) {
         case "loop":
           video.loop = true;
