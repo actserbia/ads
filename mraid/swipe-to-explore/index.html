@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script>
+
+  var SERVER = "http://ads.diwanee.com/mraid/swipe-to-explore/";
+  SERVER = ""; // <-- uncoment for local development
+  items = {
+    center: SERVER + "assets/img/content/slide_horizontal_2.JPG",
+    top: SERVER + "assets/img/content/slide_vertical_4.JPG",
+    right: SERVER + "assets/img/content/slide_horizontal_3.JPG",
+    bottom: SERVER + "assets/img/content/slide_vertical_5.JPG",
+    left: SERVER + "assets/img/content/slide_horizontal_1.JPG"
+  }
+  arrowImage = SERVER + "assets/img/ui/arrow.png";
+
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swipe To Explore Creative | Diwanee</title>
+
+  <script src="mraid.js"></script>
+
+  <script>
+  if(location.hash==="#desk"){
+    mraid = {};
+    mraid.getState = function(){return "loaded";};
+    mraid.useCustomClose = function(){};
+    mraid.open = function(url){window.open(url);};
+    mraid.setOrientationProperties = function(){};
+    mraid.close = function(){
+      var adWrap = document.getElementById('ad-wrap');
+      adWrap.style.display = "none";
+      document.body.style.backgroundColor = "blue"
+    }
+  }
+  </script>
+
+  <style>
+  * {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  html {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #ad-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  #driver {
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    -webkit-transition: top 1s, left 1s; /* Safari */
+    transition:  top 1s, left 1s;
+  }
+  .center #driver {
+    left: -100%;
+    top: -100%;
+  }
+  .top #driver {
+    left: -100%;
+    top: 0%;
+  }
+  .right #driver {
+    left: -200%;
+    top: -100%;
+  }
+  .bottom #driver {
+    left: -100%;
+    top: -200%;
+  }
+  .left #driver {
+    left: 0%;
+    top: -100%;
+  }
+  .item {
+    position: absolute;
+    width: 33.3333%;
+    height: 33.3333%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .item-center {
+    top: 33.3333%;
+    left: 33.3333%;
+  }
+  .item-top {
+    top: 0%;
+    left: 33.3333%;
+  }
+  .item-right {
+    top: 33.3333%;
+    left: 66.6666%;
+  }
+  .item-bottom {
+    top: 66.6666%;
+    left: 33.3333%;
+  }
+  .item-left {
+    top: 33.3333%;
+    left: 0%;
+  }
+  .arrow {
+    width: 50px;
+    height: 50px;
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    z-index: 10;
+  }
+  #arrow-top {
+    top: 0%;
+    left: 50%;
+    -ms-transform: translateX(-50%) rotate(-90deg);
+    -webkit-transform: translateX(-50%) rotate(-90deg);
+    transform: translateX(-50%) rotate(-90deg);
+  }
+  #arrow-right {
+    top: 50%;
+    right: 0%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  #arrow-bottom {
+    bottom: 0;
+    left: 50%;
+    -ms-transform: translateX(-50%) rotate(90deg);
+    -webkit-transform: translateX(-50%) rotate(90deg);
+    transform: translateX(-50%) rotate(90deg);
+  }
+  #arrow-left {
+    top: 50%;
+    left: 0%;
+    -ms-transform: translateY(-50%) rotate(180deg);
+    -webkit-transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);
+  }
+  .arrow {
+    display: none;
+  }
+  .center .arrow {
+    display: block;
+  }
+  .top #arrow-bottom {
+    display: block;
+  }
+  .right #arrow-left {
+    display: block;
+  }
+  .bottom #arrow-top {
+    display: block;
+  }
+  .left #arrow-right {
+    display: block;
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="ad-wrap">
+  </div>
+
+  <script>
+
+  (function(){
+
+    var html = "";
+    html += "<div id='cover' class='center'>";
+    html += " <div id='arrow-top' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-right' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-bottom' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-left' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='driver'>";
+    html += "  <div class='item item-center' style='background-image:url("+ items.center +");'></div>";
+    html += "  <div class='item item-top' style='background-image:url("+ items.top +");'></div>";
+    html += "  <div class='item item-right' style='background-image:url("+ items.right +");'></div>";
+    html += "  <div class='item item-bottom' style='background-image:url("+ items.bottom +");'></div>";
+    html += "  <div class='item item-left' style='background-image:url("+ items.left +");'></div>";
+    html += " </div>";
+    html += "</div>";
+
+    document.getElementById("ad-wrap").innerHTML = html;
+
+    //
+    // N A V I G A T I O N
+    //
+
+    var cvr = document.getElementById("cover");
+    var goTop = function(){
+      switch (cvr.className) {
+        case "bottom":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'top';
+          break;
+      }
+    }
+    var goRight = function(){
+      switch (cvr.className) {
+        case "left":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'right';
+          break;
+      }
+    }
+    var goBottom = function(){
+      switch (cvr.className) {
+        case "top":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'bottom';
+          break;
+      }
+    }
+    var goLeft = function(){
+      switch (cvr.className) {
+        case "right":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'left';
+          break;
+      }
+    }
+
+    document.getElementById('arrow-top').addEventListener('click', goTop)
+    document.getElementById("arrow-right").addEventListener('click', goRight);
+    document.getElementById("arrow-bottom").addEventListener('click', goBottom);
+    document.getElementById("arrow-left").addEventListener('click', goLeft);
+
+    // S W I P E   D E T E  C T I O N
+    var gesuredZone = document.getElementById('driver');
+    var tStartX = 0;
+    var tStartY = 0;
+    var tEndX = 0;
+    var tEndY = 0;
+    var tTimer = 0;
+    var swipeResolver = function(){
+      if ( Math.abs(tStartX-tEndX) > Math.abs(tStartY-tEndY) ) {
+        if ((tStartX-tEndX) > 0){
+          goRight();
+        }
+        if ((tStartX-tEndX) < 0){
+          goLeft();
+        }
+        clearInterval(tTimer);
+      }
+      if ( Math.abs(tStartX-tEndX) < Math.abs(tStartY-tEndY) ) {
+        if ((tStartY-tEndY) > 0){
+          goBottom();
+        }
+        if ((tStartY-tEndY) < 0){
+          goTop();
+        }
+        clearInterval(tTimer);
+      }
+    }
+    gesuredZone.addEventListener('touchstart', function(ev) {
+        tStartX = tEndX = ev.changedTouches[0].screenX;
+        tStartY = tEndY = ev.changedTouches[0].screenY;
+        tTimer = setInterval(swipeResolver ,100)
+    }, false);
+    gesuredZone.addEventListener('touchmove', function(ev) {
+        tEndX = ev.changedTouches[0].screenX;
+        tEndY = ev.changedTouches[0].screenY;
+    }, false);
+    gesuredZone.addEventListener('touchend', function(ev) {
+        clearInterval(tTimer);
+    }, false);
+
+  })();
+
+  //
+  // M R A I D
+  //
+
+  function showMRAIDAd() {
+    mraid.useCustomClose(false);
+    mraid.setOrientationProperties({
+      //"allowOrientationChange" : false,
+      "forceOrientation" : "portrait"
+    });
+  }
+
+  if (mraid.getState() === 'loading') {
+    mraid.addEventListener('ready', showMRAIDAd);
+  } else {
+    showMRAIDAd();
+  }
+
+  </script>
+
+</body>
+
+</html>
