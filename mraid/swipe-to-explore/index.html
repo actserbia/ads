@@ -288,7 +288,7 @@
     gesuredZone.addEventListener('touchstart', function(ev) {
         tStartX = tEndX = ev.changedTouches[0].screenX;
         tStartY = tEndY = ev.changedTouches[0].screenY;
-        tTimer = setInterval(swipeResolver ,100)
+        tTimer = setInterval(swipeResolver ,50)
     }, false);
     gesuredZone.addEventListener('touchmove', function(ev) {
         tEndX = ev.changedTouches[0].screenX;
