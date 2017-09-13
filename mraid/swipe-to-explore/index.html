@@ -286,15 +286,19 @@
       }
     }
     gesuredZone.addEventListener('touchstart', function(ev) {
+        ev.preventDefault();
         tStartX = tEndX = ev.changedTouches[0].screenX;
         tStartY = tEndY = ev.changedTouches[0].screenY;
+        clearInterval(tTimer);
         tTimer = setInterval(swipeResolver ,50)
     }, false);
     gesuredZone.addEventListener('touchmove', function(ev) {
+        ev.preventDefault();
         tEndX = ev.changedTouches[0].screenX;
         tEndY = ev.changedTouches[0].screenY;
     }, false);
     gesuredZone.addEventListener('touchend', function(ev) {
+        ev.preventDefault();
         clearInterval(tTimer);
     }, false);
 
