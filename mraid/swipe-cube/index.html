@@ -67,31 +67,39 @@
     overflow: hidden;
   }
   #driver {
-    position: absolute;
     width: 300%;
     height: 300%;
-    -webkit-transition: top 1s, left 1s; /* Safari */
-    transition:  top 1s, left 1s;
+    -webkit-transition: top .7s, left .7s, transform .7s ease;
+    transition:  top .7s, left .7s, transform .7s ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
   }
   .center #driver {
-    left: -100%;
-    top: -100%;
+    -ms-transform: translate3d(-33.33%, -33.33%, 0);
+    -webkit-transform: translate3d(-33.33%, -33.33%, 0);
+    transform: translate3d(-33.33%, -33.33%, 0);
   }
   .top #driver {
-    left: -100%;
-    top: 0%;
+    -ms-transform: translate3d(-33.33%, -0%, 0);
+    -webkit-transform: translate3d(-33.33%, -0%, 0);
+    transform: translate3d(-33.33%, -0%, 0);
   }
   .right #driver {
-    left: -200%;
-    top: -100%;
+    -ms-transform: translate3d(-66.66%, -33.33%, 0);
+    -webkit-transform: translate3d(-66.66%, -33.33%, 0);
+    transform: translate3d(-66.66%, -33.33%, 0);
   }
   .bottom #driver {
-    left: -100%;
-    top: -200%;
+    -ms-transform: translate3d(-33.33%, -66.66%, 0);
+    -webkit-transform: translate3d(-33.33%, -66.66%, 0);
+    transform: translate3d(-33.33%, -66.66%, 0);
   }
   .left #driver {
-    left: 0%;
-    top: -100%;
+    -ms-transform: translate3d(0%, -33.33%, 0);
+    -webkit-transform: translate3d(0%, -33.33%, 0);
+    transform: translate3d(0%, -33.33%, 0);
   }
   .item {
     position: absolute;
@@ -100,6 +108,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    overflow: hidden;
   }
   .item-center {
     top: 33.3333%;
