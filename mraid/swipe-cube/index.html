@@ -299,7 +299,7 @@
         tStartX = tEndX = ev.changedTouches[0].screenX;
         tStartY = tEndY = ev.changedTouches[0].screenY;
         clearInterval(tTimer);
-        tTimer = setInterval(swipeResolver ,50)
+        tTimer = setInterval(swipeResolver ,25);
     }, false);
     gesuredZone.addEventListener('touchmove', function(ev) {
         ev.preventDefault();
