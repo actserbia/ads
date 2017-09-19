@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script>
+  SERVER = "http://ads.diwanee.com/mraid/gyro/";
+  SERVER = ""; // <-- uncoment for local development
+  mainImg = "assets/img/image_to_explore.jpg"
+  points = [
+    {
+     x: '33.33%',
+     y: '33.33%',
+     url: 'http://google.com',
+     img: 'assets/img/touch_point.png'
+    },
+    {
+      x: '66.66%',
+      y: '66.66%',
+      url: 'http://yahoo.com',
+      img: 'assets/img/touch_point.png'
+    }
+  ]
+  </script>
+
+  <script src="http://192.168.0.111:8765/target/target-script-min.js#ipad"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gyroscope Creative | Diwanee</title>
+
+  <script src="mraid.js"></script>
+
+  <script>
+  if(location.hash.indexOf("desk") !== -1){
+    mraid = {};
+    mraid.getState = function(){return "loaded";};
+    mraid.useCustomClose = function(){};
+    mraid.open = function(url){window.open(url);};
+    mraid.setOrientationProperties = function(){};
+    mraid.close = function(){
+      var adWrap = document.getElementById('ad-wrap');
+      adWrap.style.display = "none";
+      document.body.style.backgroundColor = "blue"
+    }
+  }
+
+
+  </script>
+
+
+
+
+  <style>
+  * {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  html {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+  }
+  #ad-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+
+  }
+  #driver {
+    position: relative;
+    height: 100%;
+
+    float: left;
+  }
+  #main-image {
+    height: 100%;
+  }
+  .point{
+    position: absolute;
+    z-index: 50;
+    -ms-transform: translate(-50%, 50%) /* IE 9 */
+    -webkit-transform: translate(-50%, 50%); /* Chrome, Safari, Opera */
+    transform: translate(-50%, 50%);
+
+  }
+  </style>
+
+
+
+</head>
+
+<body>
+
+  <div id="ad-wrap">
+
+
+
+  </div>
+
+  <script>
+
+
+  (function(){
+
+
+
+    var mainImgObj = new Image();
+    mainImgObj.addEventListener('load', function() {
+      var html = "";
+      html += "<div id='cover'>";
+      html += "<div id='driver'>";
+      for (var i=0; i < points.length; i++ ) {
+        html += "<span class='point' style='left:" + points[i].x + "; bottom:" + points[i].y + ";' onClick='mraid.open(\"" + points[i].url + "\");'> <img src='" + SERVER + points[i].img + "'> </span>";
+      }
+      html += "</div>"
+      html += "</div>"
+      document.getElementById("ad-wrap").innerHTML = html;
+      document.getElementById("driver").appendChild(mainImgObj);
+      document.getElementById('cover').scrollLeft = (document.getElementById('driver').offsetWidth - document.getElementById('cover').offsetWidth) / 2;
+      if (document.getElementById("cover").style.scrollBehavior) {
+        document.getElementById("cover").style.scrollBehavior = 'smooth';
+      }
+
+    }, false);
+    mainImgObj.src = SERVER + mainImg;
+    mainImgObj.id = "main-image";
+
+
+
+
+    //
+    // M R A I D
+    //
+
+    function showMRAIDAd() {
+      mraid.useCustomClose(false);
+      mraid.setOrientationProperties({
+        //"allowOrientationChange" : false,
+        "forceOrientation" : "portrait"
+      });
+
+
+      var scroll = function(offset){
+        var currentScroll = document.getElementById('cover').scrollLeft;
+        document.getElementById('cover').scrollLeft = currentScroll + Math.pow(offset/2, 3);
+      }
+
+
+      if (window.DeviceMotionEvent) {
+        window.addEventListener("devicemotion", function (ev) {
+          try {
+            var aig = ev.accelerationIncludingGravity;
+            var ori = {x:parseFloat(aig.x.toFixed(2)),y:parseFloat(aig.y.toFixed(2)),z:parseFloat(aig.z.toFixed(2))};
+            if (ori.x > 1) {
+              scroll(-ori.x)
+            }
+            if (ori.x < -1) {
+              scroll(-ori.x)
+            }
+          }
+          catch(err){
+            console.log("gravity not supported ::");
+          }
+        }, false);
+      }
+
+
+
+    }
+
+    if (mraid.getState() === 'loading') {
+      mraid.addEventListener('ready', showMRAIDAd);
+    } else {
+      showMRAIDAd();
+    }
+
+  })();
+
+  </script>
+
+
+
+</body>
+
+</html>
