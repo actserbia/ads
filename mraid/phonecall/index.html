@@ -264,19 +264,19 @@
       container.innerHTML += "<img id='copyright' src='"+ copyrightImg +"'>";
       switch (answer.type) {
         case "image" :
-        container.innerHTML += tplPageImage("answer");
-        break;
+          container.innerHTML += tplPageImage("answer");
+          break;
         case "video" :
-        container.innerHTML += tplPageVideo("answer");
-        break;
+          container.innerHTML += tplPageVideo("answer");
+          break;
       }
       switch (decline.type) {
         case "image" :
-        container.innerHTML += tplPageImage("decline");
-        break;
+          container.innerHTML += tplPageImage("decline");
+          break;
         case "video" :
-        container.innerHTML += tplPageVideo("decline");
-        break;
+          container.innerHTML += tplPageVideo("decline");
+          break;
       }
     })();
 
@@ -292,37 +292,36 @@
       var video = document.getElementById("page-"+designator).getElementsByTagName('video')[0];
       switch (config.clickURL) {
         case false:
-        break;
+          break;
         default:
-        document.getElementById('video').addEventListener('click', function() {
-          mraid.open(config.clickURL);
-        });
+          document.getElementById('video').addEventListener('click', function() {
+            mraid.open(config.clickURL);
+          });
       }
       switch (config.onEnd) {
         case "loop":
-        video.loop = true;
-        break;
+          video.loop = true;
+          break;
         case "close":
-        video.onended = function() {
-          mraid.close();
-        }
-        break;
+          video.onended = function() {
+            mraid.close();
+          }
+          break;
         case "image":
-        video.onended = function() {
-          document.getElementsByClassName('page-type-video')[0].style.display = 'none';
-          var pageImage = document.getElementsByClassName('page-type-image')[0];
-          pageImage.style.display = 'block';
-          var pageImageDesignator = pageImage.id.split("-")[1];
-          runSlider(pageImageDesignator);
-        }
-        break;
+          video.onended = function() {
+            document.getElementsByClassName('page-type-video')[0].style.display = 'none';
+            var pageImage = document.getElementsByClassName('page-type-image')[0];
+            pageImage.style.display = 'block';
+            var pageImageDesignator = pageImage.id.split("-")[1];
+            runSlider(pageImageDesignator);
+          }
+          break;
         default:
-        video.onended = function() {
-          mraid.open(config.onEnd);
-        }
+          video.onended = function() {
+            mraid.open(config.onEnd);
+          }
       }
       video.play();
-      runVideo = function(){};
     }
 
     var runSlider = function(designator){
@@ -366,7 +365,6 @@
           mraid.open(config.clickURL);
         });
       }
-      runSlider = function(){};
     }
 
 
@@ -388,23 +386,22 @@
       document.getElementById('button-answer').addEventListener('click', function() {
         var page = document.getElementById('page-answer');
         var home = document.getElementById('page-home');
-        switch (decline.type) {
+        switch (answer.type) {
           case "image":
-          home.style.display = 'none';
-          page.style.display = 'block';
-          runSlider("answer");
-          break;
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runSlider("answer");
+            break;
           case "video":
-          home.style.display = 'none';
-          page.style.display = 'block';
-          runVideo("answer");
-          break;
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runVideo("answer");
+            break;
           case "close":
-          mraid.close();
-          break;
+            mraid.close();
+            break;
           default: // `URL`
-          mraid.open(decline.type);
-          break;
+            mraid.open(decline.type);
         }
 
       });
@@ -416,21 +413,20 @@
         var home = document.getElementById('page-home');
         switch (decline.type) {
           case "image":
-          home.style.display = 'none';
-          page.style.display = 'block';
-          runSlider("decline");
-          break;
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runSlider("decline");
+            break;
           case "video":
-          home.style.display = 'none';
-          page.style.display = 'block';
-          runVideo("decline");
-          break;
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runVideo("decline");
+            break;
           case "close":
-          mraid.close();
-          break;
+            mraid.close();
+            break;
           default: // `URL`
-          mraid.open(decline.type);
-          break;
+            mraid.open(decline.type);
         }
       });
     }
