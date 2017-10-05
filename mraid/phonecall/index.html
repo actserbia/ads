@@ -259,6 +259,9 @@
     //
 
     ;(function(){ // done due to faster loading of `page home`
+
+      (new Image()).src = pgHomeMainImg;
+
       var container = document.getElementById("ad-wrap");
       container.innerHTML += tplPageHome();
       container.innerHTML += "<img id='copyright' src='"+ copyrightImg +"'>";
