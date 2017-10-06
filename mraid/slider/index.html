@@ -152,18 +152,12 @@
     window.adSwipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
       transitionEnd: function(index, elem) {
-
-
-        //ga('send', 'event', [eventCategory], [eventAction], [eventLabel], [eventValue], [fieldsObject]);
-        ga('send', 'event', "Inter_Slider_Img_001");
-        //dataLayer.push({'event': 'Inter_Slider_Img_001'});
-
-
-        console.log('scrolled');
+        gtag('event', 'Inter_Slider_Img_001_swiped', {'value': index});
       }
     });
 
     document.getElementById('slider').addEventListener('click', function() {
+      gtag('event', 'Inter_Slider_Img_001_click');
       mraid.open(clickURL);
     });
 
