@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+
+
+
+  //
+  // C O N F I G
+  //
+
+  // BASE URL PATH FOR FILES
+  var SERVER = "http://ads.diwanee.com/mraid/phonecall-img/";
+  //SERVER = ""; // <-- uncoment for local development
+
+  // PAGE HOME
+  // main image
+  pgHomeMainImg = SERVER + "assets/img/TELEPHONE.jpg";
+  // answer the call button image
+  pgHomeAnswerImg = SERVER + "assets/img/BTN-VERT.png";
+  // decline the call button image
+  pgHomeDeclineImg = SERVER + "assets/img/BTN-ROUGE.png";
+
+  // PAGE ANSWER
+  answer = {
+    type: "image", // [ "image" | "video" | "URL string" ]
+    clickURL: "http://google.com", //[ "URL string" | ]
+    interval: 2000, // time interval for image rotation (mili seconds)
+    elements: [ // url(s) for images or videos
+      SERVER + "assets/img/TELEPHONE-10.jpg",
+      SERVER + "assets/img/TELEPHONE-11.jpg",
+      SERVER + "assets/img/TELEPHONE-12.jpg"
+    ],
+  };
+
+  // PAGE DECLINE
+  decline = {
+    type: "image", // [ "image" | "video" | "url" ]
+    clickURL: "https://www.nasa.gov/",
+    elements: [
+      "https://spaceplace.nasa.gov/review/whats-older/GALEX-M81-lrg.en.jpg"
+    ]
+  };
+
+  // COPIRIGHTS IMAGE
+  copyrightImg = SERVER + "assets/img/copyright.svg";
+
+  // RING EFFECTS
+  ringEffects = {
+    animType: "pulse", // type of button animation
+    animInterval: 0.15, // speed of button animation (seconds)
+  };
+
+
+
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Call Creative</title>
+
+  <script src="mraid.js"></script>
+
+  <script>
+  if(location.hash==="#web"){
+    mraid = {};
+    mraid.getState = function(){return "loaded";};
+    mraid.useCustomClose = function(){};
+    mraid.open = function(url){window.open(url);};
+    mraid.setOrientationProperties = function(){};
+    mraid.close = function(){
+      var adWrap = document.getElementById('ad-wrap');
+      adWrap.style.display = "none";
+      document.body.style.backgroundColor = "black"
+    }
+  }
+  </script>
+
+  <style>
+
+  /* layout */
+  * {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  html {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #ad-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #copyright {
+    position: absolute;
+    left: .3rem;
+    bottom: .3rem;
+    width: 130px;
+    z-index: 10;
+  }
+  #page-home {
+  }
+  #page-answer {
+    display: none;
+  }
+  #page-decline {
+    display: none;
+  }
+
+  /* framework */
+  .full {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .tapet {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* page home */
+  .button {
+    position: absolute;
+    bottom: 3rem;
+    width: 50%;
+    text-align: center;
+  }
+  .button .bimg {
+    width: 5rem;
+    height: 5rem;
+  }
+  #button-answer-w {
+    left: 0;
+  }
+  #button-decline-w {
+    right: 0;
+  }
+
+  /* page image */
+  .page-type-image .item {
+    position: absolute;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  /* page video */
+  .page-type-video video {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* animations */
+  @-webkit-keyframes pulse {
+    0%, 100% {
+      -webkit-transform: scale(0.98, 0.98); /* Safari */
+      transform: scale(0.98, 0.98);
+    }
+    50% {
+      -webkit-transform: scale(1.02, 1.02); /* Safari */
+      transform: scale(1.02, 1.02);
+    }
+  }
+  @keyframes pulse {
+    0%, 100% {
+      -webkit-transform: scale(0.98, 0.98); /* Safari */
+      transform: scale(0.98, 0.98);
+    }
+    50% {
+      -webkit-transform: scale(1.02, 1.02); /* Safari */
+      transform: scale(1.02, 1.02);
+    }
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="ad-wrap"></div>
+
+  <script>
+
+  (function(){
+
+
+
+    //
+    //  T E M P L A T E S
+    //
+
+    var tplPageVideo = function(designator){
+      var config = {};
+      eval("config = " + designator);
+      var html = "";
+      html += '<div id="page-' + designator + '" class="full page-type-video">';
+      html += "<div id='fader' class='full'>";
+      html += "<video id='video'>";
+      for (var vsrc=0; vsrc < config.elements.length; vsrc++) {
+        html += "<source src='" + config.elements[vsrc] + "' type='video/mp4'>";
+      }
+      html += "</video>";
+      html += "</div>"
+      html += '</div>';
+      return html;
+    }
+
+    var tplPageImage = function(designator){
+      var config = {};
+      eval("config = " + designator);
+      var html = "";
+      html += '<div id="page-'+ designator +'" class="page-type-image full">';
+      html += "<div class='fader full'>";
+      for (var sl=0; sl < config.elements.length; sl++ ) {
+        html += "<div class='item tapet' style='background-image:url("+ config.elements[sl] +");'></div>";
+        (new Image()).src = config.elements[sl]; // prerender images
+      }
+      html += "</div>"
+      html += '</div>';
+      return html;
+    }
+
+    var tplPageHome = function(){
+      var animStyle = "";
+      if (!!ringEffects.animType) {
+        animStyle += "-webkit-animation: " + ringEffects.animType + " " + ringEffects.animInterval + "s infinite;";
+        animStyle += "animation: " + ringEffects.animType + " " + ringEffects.animInterval + "s infinite;";
+      }
+      var html = "";
+      html += '<div id="page-home" class="full">';
+      html += " <div class='tapet' style='background-image:url("+ pgHomeMainImg +");'></div>";
+      html += ' <div id="button-answer-w" class="button">';
+      html += "  <img id='button-answer' style='"+animStyle+"' class='bimg' src='"+ pgHomeAnswerImg +"'>";
+      html += ' </div>';
+      html += ' <div id="button-decline-w" class="button">';
+      html += "  <img id='button-decline' class='bimg' src='"+ pgHomeDeclineImg +"'>";
+      html += ' </div>';
+      html += '</div>';
+      return html;
+    }
+
+
+
+    //
+    //  R E N D E R
+    //
+
+    ;(function(){ // done due to faster loading of `page home`
+
+      (new Image()).src = pgHomeMainImg;
+
+      var container = document.getElementById("ad-wrap");
+      container.innerHTML += tplPageHome();
+      container.innerHTML += "<img id='copyright' src='"+ copyrightImg +"'>";
+      switch (answer.type) {
+        case "image" :
+          container.innerHTML += tplPageImage("answer");
+          break;
+        case "video" :
+          container.innerHTML += tplPageVideo("answer");
+          break;
+      }
+      switch (decline.type) {
+        case "image" :
+          container.innerHTML += tplPageImage("decline");
+          break;
+        case "video" :
+          container.innerHTML += tplPageVideo("decline");
+          break;
+      }
+    })();
+
+
+
+    //
+    //  A C T I O N S
+    //
+
+    var runVideo = function(designator){
+      var config = {};
+      eval("config = " + designator);
+      var video = document.getElementById("page-"+designator).getElementsByTagName('video')[0];
+      switch (config.clickURL) {
+        case false:
+          break;
+        default:
+          document.getElementById('video').addEventListener('click', function() {
+            mraid.open(config.clickURL);
+          });
+      }
+      switch (config.onEnd) {
+        case "loop":
+          video.loop = true;
+          break;
+        case "close":
+          video.onended = function() {
+            mraid.close();
+          }
+          break;
+        case "image":
+          video.onended = function() {
+            document.getElementsByClassName('page-type-video')[0].style.display = 'none';
+            var pageImage = document.getElementsByClassName('page-type-image')[0];
+            pageImage.style.display = 'block';
+            var pageImageDesignator = pageImage.id.split("-")[1];
+            runSlider(pageImageDesignator);
+          }
+          break;
+        default:
+          video.onended = function() {
+            mraid.open(config.onEnd);
+          }
+      }
+      video.play();
+    }
+
+    var runSlider = function(designator){
+      var config = {};
+      eval("config = " + designator);
+      var faderInterval = config.interval || 2000;
+      var page = document.getElementById( "page-" + designator )
+      var slides = page.getElementsByClassName('fader')[0].childNodes;
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].style.webkitTransition = "opacity " + faderInterval/2000 + "s ease-in-out";
+        slides[i].style.transition = "opacity " + faderInterval/2000 + "s ease-in-out";
+      }
+      slides[0].style.opacity = 1;
+      if (!!slides[1]) {
+        setInterval(function(){
+          for(var si = 0; si < slides.length; si++){
+            if (slides[si].style.opacity === '1'){
+              if (!!slides[si+1]){
+                setTimeout(function(){
+                  slides[si].style.opacity = 0;
+                }, faderInterval/2);
+                slides[si].style.zIndex = 0;
+                slides[si+1].style.opacity = 1;
+                slides[si+1].style.zIndex = 1;
+              }
+              else {
+                setTimeout(function(){
+                  slides[si].style.opacity = 0;
+                }, faderInterval/2);
+                slides[si].style.zIndex = 0;
+                slides[0].style.opacity = 1;
+                slides[0].style.zIndex = 1;
+              }
+              break;
+            }
+          }
+        }, faderInterval);
+      }
+      if (config.clickURL) {
+        page.addEventListener('click', function() {
+          mraid.open(config.clickURL);
+        });
+      }
+    }
+
+
+
+    //
+    // B I N D I N G S
+    //
+
+
+    function showMRAIDAd() {
+
+      document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+      });
+
+      mraid.useCustomClose(false);
+
+      // answer button click
+      document.getElementById('button-answer').addEventListener('click', function() {
+        var page = document.getElementById('page-answer');
+        var home = document.getElementById('page-home');
+        switch (answer.type) {
+          case "image":
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runSlider("answer");
+            break;
+          case "video":
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runVideo("answer");
+            break;
+          case "close":
+            mraid.close();
+            break;
+          default: // `URL`
+            mraid.open(decline.type);
+        }
+
+      });
+
+
+      // decline button click
+      document.getElementById('button-decline').addEventListener('click', function() {
+        var page = document.getElementById('page-decline');
+        var home = document.getElementById('page-home');
+        switch (decline.type) {
+          case "image":
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runSlider("decline");
+            break;
+          case "video":
+            home.style.display = 'none';
+            page.style.display = 'block';
+            runVideo("decline");
+            break;
+          case "close":
+            mraid.close();
+            break;
+          default: // `URL`
+            mraid.open(decline.type);
+        }
+      });
+    }
+
+
+
+    //
+    // M R A I D
+    //
+
+    mraid.setOrientationProperties({
+      //"allowOrientationChange" : false,
+      "forceOrientation" : "portrait"
+    });
+
+    if (mraid.getState() === 'loading') {
+      mraid.addEventListener('ready', showMRAIDAd);
+    } else {
+      showMRAIDAd();
+    }
+
+
+
+  })();
+  </script>
+</body>
+</html>
