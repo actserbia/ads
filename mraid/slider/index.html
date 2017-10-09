@@ -14,8 +14,8 @@
   <script>
 
   // BASE URL PATH FOR FILES
-  var SERVER = "http://ads.diwanee.com/mraid/slider/";
-  SERVER = ""; // <-- uncoment for local development
+  SERVER = "http://ads.diwanee.com/mraid/slider/";
+  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
 
   // URL FOR CLICK ACTION
   clickURL = "sas:click"
@@ -62,7 +62,7 @@
 
 
   <script>
-  if(location.hash==="#web"){
+  if(location.hash.indexOf("web") !== -1){
     mraid = {};
     mraid.getState = function(){return "loaded";};
     mraid.useCustomClose = function(){};
