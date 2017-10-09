@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script>
 
 
 
+  <!--
   //
   // C O N F I G
-  //
+  //  -->
+
+
+
+  <script>
 
   // BASE URL PATH FOR FILES
   var SERVER = "http://ads.diwanee.com/mraid/slider/";
   SERVER = ""; // <-- uncoment for local development
 
   // URL FOR CLICK ACTION
-  clickURL = "http://diwanee.com"
+  clickURL = "sas:click"
 
   // IMAGE ITEMS FOR SLIDER
   items = [
@@ -23,10 +27,21 @@
     SERVER + "assets/img/PIA03160-orig.jpg"
   ];
 
-  // ID FOR GOOGLE ANALYTICS
-  trackingID = 'UA-92068038-21';
+  // PARAMETERS FOR TRACKING
+  tracking = {
+    gaID: 'UA-26097452-1',  // Google Analytics Tracking Id
+    gaEventCategory: "Inter_Slider_Img_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+  }
+
+  //
+  // ! ! ! W A R N I N G ! ! !
+  // IAS SOURCES FOR PIXEL TRACKING
+  // SHOULD BE SET AT THE END OF THIS DOCUMENT
+  //
 
   </script>
+
+
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,13 +51,13 @@
 
   <!-- Global Site Tag (gtag.js) - Google Analytics -->
   <script>
-    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+trackingID+'"><\/script>');
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
   </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
-    gtag('config', trackingID);
+    gtag('config', tracking.gaID);
   </script>
 
 
@@ -113,6 +128,8 @@
 <body>
   <div id="app"></div>
 
+
+
   <script>
 
   var html = "";
@@ -152,15 +169,23 @@
     window.adSwipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
       transitionEnd: function(index, elem) {
-        gtag('event', 'Inter_Slider_Img_001_swiped', {'value': index});
+        //https://developers.google.com/analytics/devguides/collection/gtagjs/events
+        gtag('event', 'swipe', { // event_action
+          'value': index,
+          'event_category': tracking.gaEventCategory,
+          //'event_label': "labela"
+        });
       }
     });
 
     document.getElementById('slider').addEventListener('click', function() {
-      gtag('event', 'Inter_Slider_Img_001_click');
+      gtag('event', 'click', { // event_action
+        //'value': index,
+        'event_category': tracking.gaEventCategory,
+        //'event_label': "labela"
+      });
       mraid.open(clickURL);
     });
-
 
   }
 
@@ -182,5 +207,17 @@
   }
 
   </script>
+
+
+
+  <!--
+  // IAS SOURCES FOR PIXEL TRACKING-->
+  <script
+     src="http://pixel.adsafeprotected.com/rjss/st/115679/19012727/skeleton.js" type="application/javascript"></script>
+  <noscript><img
+    src="http://pixel.adsafeprotected.com/rfw/st/115679/19012726/skeleton.gif" border=0 width=1 height=1 alt=""></noscript>
+
+
+
 </body>
 </html>
