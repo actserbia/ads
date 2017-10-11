@@ -5,8 +5,11 @@
 
   <script>
 
+  // BASE URL PATH FOR FILES
   var SERVER = "http://ads.diwanee.com/mraid/swipe-cube/";
-  //SERVER = ""; // <-- uncoment for local development
+  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
+
+  // IMAGE ITEMS FOR SLIDER
   items = {
     center: SERVER + "assets/img/content/slide_horizontal_2.JPG",
     top: SERVER + "assets/img/content/slide_vertical_4.JPG",
@@ -14,18 +17,46 @@
     bottom: SERVER + "assets/img/content/slide_vertical_5.JPG",
     left: SERVER + "assets/img/content/slide_horizontal_1.JPG"
   }
+
+  // URL FOR CLICK ACTION
+  clickURL = "http://allocine.com/" // empty url disabling click action
+
+  // NAVIGATION IMAGE
   arrowImage = SERVER + "assets/img/ui/arrow.png";
+
+  // PARAMETERS FOR TRACKING
+  tracking = {
+    gaID: 'UA-26097452-1',  // Google Analytics Tracking Id
+    gaEventCategory: "Inter_Swipe_Cube_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+  }
+
+  //
+  // ! ! ! W A R N I N G ! ! !
+  // IAS SOURCES FOR PIXEL TRACKING
+  // SHOULD BE SET AT THE END OF THIS DOCUMENT
+  //
 
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swipe Cube Creative | Diwanee</title>
+  <title>Swipe Cube MRAID</title>
 
   <script src="mraid.js"></script>
 
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
   <script>
-  if(location.hash==="#desk"){
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', tracking.gaID);
+  </script>
+
+  <script>
+  if (location.hash.indexOf('web')!==-1) {
     mraid = {};
     mraid.getState = function(){return "loaded";};
     mraid.useCustomClose = function(){};
@@ -267,6 +298,18 @@
     document.getElementById("arrow-bottom").addEventListener('click', goBottom);
     document.getElementById("arrow-left").addEventListener('click', goLeft);
 
+
+    document.getElementById('cover').addEventListener('click', function(){
+      if (!!clickURL && clickURL !== "") {
+        gtag('event', 'click', { // event_action
+          //'value': index,
+          'event_category': tracking.gaEventCategory,
+          'event_label': "ClickURL"
+        });
+        mraid.open(clickURL);
+      }
+    });
+
     // S W I P E   D E T E  C T I O N
     var gesuredZone = document.getElementById('driver');
     var tStartX = 0;
@@ -274,6 +317,7 @@
     var tEndX = 0;
     var tEndY = 0;
     var tTimer = 0;
+    window.lastPosition = "";
     var swipeResolver = function(){
       if ( Math.abs(tStartX-tEndX) > Math.abs(tStartY-tEndY) ) {
         if ((tStartX-tEndX) > 0){
@@ -293,21 +337,30 @@
         }
         clearInterval(tTimer);
       }
+      var position = document.getElementById('cover').className;
+      if (position !== window.lastPosition) {
+        window.lastPosition = position;
+        gtag('event', 'swipe', { // event_action
+          //'value': position,
+          'event_category': tracking.gaEventCategory,
+          'event_label': position
+        });
+      }
     }
     gesuredZone.addEventListener('touchstart', function(ev) {
-        ev.preventDefault();
+        //ev.preventDefault();
         tStartX = tEndX = ev.changedTouches[0].screenX;
         tStartY = tEndY = ev.changedTouches[0].screenY;
         clearInterval(tTimer);
         tTimer = setInterval(swipeResolver ,25);
     }, false);
     gesuredZone.addEventListener('touchmove', function(ev) {
-        ev.preventDefault();
+        //ev.preventDefault();
         tEndX = ev.changedTouches[0].screenX;
         tEndY = ev.changedTouches[0].screenY;
     }, false);
     gesuredZone.addEventListener('touchend', function(ev) {
-        ev.preventDefault();
+        //ev.preventDefault();
         clearInterval(tTimer);
     }, false);
 
@@ -332,6 +385,17 @@
   }
 
   </script>
+
+
+
+    <!--
+    // IAS SOURCES FOR PIXEL TRACKING-->
+    <script
+       src="http://pixel.adsafeprotected.com/rjss/st/115679/19012727/skeleton.js" type="application/javascript"></script>
+    <noscript><img
+      src="http://pixel.adsafeprotected.com/rfw/st/115679/19012726/skeleton.gif" border=0 width=1 height=1 alt=""></noscript>
+
+
 
 </body>
 

@@ -18,7 +18,7 @@
   SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
 
   // URL FOR CLICK ACTION
-  clickURL = "http://allocine.com/"
+  clickURL = "http://allocine.com/" // empty url disabling click action
 
   // IMAGE ITEMS FOR SLIDER
   items = [
@@ -173,18 +173,20 @@
         gtag('event', 'swipe', { // event_action
           'value': index,
           'event_category': tracking.gaEventCategory,
-          //'event_label': "labela"
+          'event_label': index
         });
       }
     });
 
     document.getElementById('slider').addEventListener('click', function() {
-      gtag('event', 'click', { // event_action
-        //'value': index,
-        'event_category': tracking.gaEventCategory,
-        //'event_label': "labela"
-      });
-      mraid.open(clickURL);
+      if (!!clickURL && clickURL !== "") {
+        gtag('event', 'click', { // event_action
+          //'value': index,
+          'event_category': tracking.gaEventCategory,
+          'event_label': "ClickURL"
+        });
+        mraid.open(clickURL);
+      }
     });
 
   }

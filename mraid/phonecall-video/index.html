@@ -11,7 +11,7 @@
 
   // BASE URL PATH FOR FILES
   var SERVER = "http://ads.diwanee.com/mraid/phonecall-video/";
-  //SERVER = ""; // <-- uncoment for local development
+  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
 
   // PAGE HOME
   // main image
@@ -52,18 +52,41 @@
     animInterval: 0.15, // speed of button animation (seconds)
   };
 
+  // PARAMETERS FOR TRACKING
+  tracking = {
+    gaID: 'UA-26097452-1',  // Google Analytics Tracking Id
+    gaEventCategory: "Inter_Phonecall_Vid_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+  }
+
+  //
+  // ! ! ! W A R N I N G ! ! !
+  // IAS SOURCES FOR PIXEL TRACKING
+  // SHOULD BE SET AT THE END OF THIS DOCUMENT
+  //
+
 
 
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phone Call Creative</title>
+  <title>Phone Call MRAID</title>
 
   <script src="mraid.js"></script>
 
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
   <script>
-  if(location.hash==="#web"){
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', tracking.gaID);
+  </script>
+
+  <script>
+  if (location.hash.indexOf('web')!==-1) {
     mraid = {};
     mraid.getState = function(){return "loaded";};
     mraid.useCustomClose = function(){};
@@ -298,6 +321,11 @@
           break;
         default:
           document.getElementById('video').addEventListener('click', function() {
+            gtag('event', 'click', { // event_action
+              //'value': index,
+              'event_category': tracking.gaEventCategory,
+              'event_label': "ClickURL-Video"
+            });
             mraid.open(config.clickURL);
           });
       }
@@ -365,6 +393,11 @@
       }
       if (config.clickURL) {
         page.addEventListener('click', function() {
+          gtag('event', 'click', { // event_action
+            //'value': index,
+            'event_category': tracking.gaEventCategory,
+            'event_label': "ClickURL-Image"
+          });
           mraid.open(config.clickURL);
         });
       }
@@ -406,7 +439,11 @@
           default: // `URL`
             mraid.open(decline.type);
         }
-
+        gtag('event', 'click', { // event_action
+          //'value': position,
+          'event_category': tracking.gaEventCategory,
+          'event_label': "Answer"
+        });
       });
 
 
@@ -431,6 +468,11 @@
           default: // `URL`
             mraid.open(decline.type);
         }
+        gtag('event', 'click', { // event_action
+          //'value': position,
+          'event_category': tracking.gaEventCategory,
+          'event_label': "Answer"
+        });
       });
     }
 
@@ -455,5 +497,17 @@
 
   })();
   </script>
+
+
+
+    <!--
+    // IAS SOURCES FOR PIXEL TRACKING-->
+    <script
+       src="http://pixel.adsafeprotected.com/rjss/st/115679/19012727/skeleton.js" type="application/javascript"></script>
+    <noscript><img
+      src="http://pixel.adsafeprotected.com/rfw/st/115679/19012726/skeleton.gif" border=0 width=1 height=1 alt=""></noscript>
+
+
+
 </body>
 </html>

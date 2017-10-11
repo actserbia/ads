@@ -4,9 +4,21 @@
 <head>
 
   <script>
+
+
+
+  //
+  // C O N F I G
+  //
+
+  // BASE URL PATH FOR FILES
   SERVER = "http://ads.diwanee.com/mraid/gyro-explorer/";
-  //SERVER = ""; // <-- uncoment for local development
+  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
+
+  // MAIN IMAGE
   mainImg = "assets/img/image_to_explore.jpg"
+
+  // CLICKABLE REGIONS
   points = [
     {
      x: '33.33%',
@@ -21,18 +33,44 @@
       img: 'assets/img/touch_point.png'
     }
   ]
+
+  // PARAMETERS FOR TRACKING
+  tracking = {
+    gaID: 'UA-26097452-1',  // Google Analytics Tracking Id
+    gaEventCategory: "Inter_Gyro_Explorer_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+  }
+
+  //
+  // ! ! ! W A R N I N G ! ! !
+  // IAS SOURCES FOR PIXEL TRACKING
+  // SHOULD BE SET AT THE END OF THIS DOCUMENT
+  //
+
+
   </script>
 
-  <!--script src="http://192.168.0.111:8765/target/target-script-min.js#ipad"></script-->
+
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gyroscope Creative | Diwanee</title>
+  <title>Gyro Explorer MRAID</title>
 
   <script src="mraid.js"></script>
 
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
   <script>
-  if(location.hash.indexOf("desk") !== -1){
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', tracking.gaID);
+  </script>
+
+
+  <script>
+  if(location.hash.indexOf("web") !== -1){
     mraid = {};
     mraid.getState = function(){return "loaded";};
     mraid.useCustomClose = function(){};
@@ -120,12 +158,21 @@
 
 
     var mainImgObj = new Image();
+    window.actions = [];
     mainImgObj.addEventListener('load', function() {
       var html = "";
       html += "<div id='cover'>";
       html += "<div id='driver'>";
       for (var i=0; i < points.length; i++ ) {
-        html += "<span class='point' style='left:" + points[i].x + "; bottom:" + points[i].y + ";' onClick='mraid.open(\"" + points[i].url + "\");'> <img src='" + SERVER + points[i].img + "'> </span>";
+        window.actions[i] = function(j){
+          gtag('event', 'click', { // event_action
+            'value': j,
+            'event_category': tracking.gaEventCategory,
+            'event_label': "target-"+j
+          });
+          mraid.open(points[j].url);
+        };
+        html += "<span class='point' style='left:" + points[i].x + "; bottom:" + points[i].y + ";' onClick='window.actions["+i+"]("+i+");'> <img src='" + SERVER + points[i].img + "'> </span>";
       }
       html += "</div>"
       html += "</div>"
@@ -195,6 +242,14 @@
 
 
 
-</body>
+    <!--
+    // IAS SOURCES FOR PIXEL TRACKING-->
+    <script
+       src="http://pixel.adsafeprotected.com/rjss/st/115679/19012727/skeleton.js" type="application/javascript"></script>
+    <noscript><img
+      src="http://pixel.adsafeprotected.com/rfw/st/115679/19012726/skeleton.gif" border=0 width=1 height=1 alt=""></noscript>
 
+
+
+</body>
 </html>
