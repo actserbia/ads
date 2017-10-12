@@ -15,7 +15,7 @@
 
   // BASE URL PATH FOR FILES
   SERVER = "http://ads.diwanee.com/mraid/slider/";
-  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
+  /*                                                 ---->  in this line is for DEVELOPMENT :: no need for editing ---->  */ SERVER = (location.host.indexOf("ads.diwanee.com") !== -1) ? "http://ads.diwanee.com/mraid/slider/" : SERVER;;;;;;;;;;;;; SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER;
 
   // URL FOR CLICK ACTION
   clickURL = "http://allocine.com/" // empty url disabling click action

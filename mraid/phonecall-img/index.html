@@ -11,7 +11,7 @@
 
   // BASE URL PATH FOR FILES
   var SERVER = "http://ads.diwanee.com/mraid/phonecall-img/";
-  SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER; // useful for development (put `local` in hashtag)
+  /*                                                 ---->  in this line is for DEVELOPMENT :: no need for editing ---->  */ SERVER = (location.host.indexOf("ads.diwanee.com") !== -1) ? "http://ads.diwanee.com/mraid/phonecall-img/" : SERVER;;;;;;;;;;;;; SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER;
 
   // PAGE HOME
   // main image
