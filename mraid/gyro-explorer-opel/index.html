@@ -32,23 +32,43 @@
   // CLICKABLE REGIONS
   points = {
     mob: {
-      land: [
-        {x: '33.33%', y: '33.33%', url: 'http://google.com', img: 'assets/img/touch_point.png'},
-        {x: '66.66%', y: '66.66%', url: 'http://yahoo.com',  img: 'assets/img/touch_point.png'}
+      port: [
+        {
+          x: '50%',
+          y: '50%',
+          url: 'http://google.com',
+          //img: 'assets/img/touch_point.png',
+          extraStyles: "width:100%; height:100%;"
+        },
+        {
+          x: '50%',
+          y: '50%',
+          url: 'http://yahoo.com',
+          unclickable: true,
+          extraStyles: "width: 15%; height:24%;"
+        }
       ],
-      port:[
-        {x: '33.33%', y: '33.33%', url: 'http://google.com', img: 'assets/img/touch_point.png'},
-        {x: '66.66%', y: '66.66%', url: 'http://yahoo.com',  img: 'assets/img/touch_point.png'}
+      land:[
       ]
     },
     tab: {
-      land: [
-        {x: '33.33%', y: '33.33%', url: 'http://google.com', img: 'assets/img/touch_point.png'},
-        {x: '66.66%', y: '66.66%', url: 'http://yahoo.com',  img: 'assets/img/touch_point.png'}
+      port: [
+        {
+          x: '50%',
+          y: '50%',
+          url: 'http://google.com',
+          //img: 'assets/img/touch_point.png',
+          extraStyles: "width:100%; height:100%;"
+        },
+        {
+          x: '50%',
+          y: '50%',
+          url: 'http://yahoo.com',
+          unclickable: true,
+          extraStyles: "width: 15%; height:24%;"
+        }
       ],
-      port:[
-        {x: '33.33%', y: '33.33%', url: 'http://google.com', img: 'assets/img/touch_point.png'},
-        {x: '66.66%', y: '66.66%', url: 'http://yahoo.com',  img: 'assets/img/touch_point.png'}
+      land:[
       ]
     }
   }
@@ -240,16 +260,24 @@
         html += "<div id='cover'>";
         html += "<div id='driver'>";
         for (var i=0; i < points.length; i++ ) {
-          window.actions[i] = function(j){
-            gtag('event', 'click', { // event_action
-              'event_category': tracking.gaEventCategory,
-              'event_label': "target"+j,
-              'dimension1': tracking.dimension1,
-              'dimension2': tracking.dimension2
-            });
-            mraid.open(points[j].url);
-          };
-          html += "<span class='point' style='left:" + points[i].x + "; bottom:" + points[i].y + ";' onClick='window.actions["+i+"]("+i+");'> <img src='" + SERVER + points[i].img + "'> </span>";
+
+          if (!points[i].unclickable) {
+            window.actions[i] = function(j){
+              gtag('event', 'click', { // event_action
+                'event_category': tracking.gaEventCategory,
+                'event_label': "target"+j,
+                'dimension1': tracking.dimension1,
+                'dimension2': tracking.dimension2
+              });
+              mraid.open(points[j].url);
+            };
+          }
+
+          var onclick = (!!points[i].unclickable) ? "" : "onClick='window.actions["+i+"]("+i+");'";
+          var style = "left:" + points[i].x + "; bottom:" + points[i].y + "; "  + ((!!points[i].extraStyles) ? points[i].extraStyles : "");
+          var img = (!!points[i].img) ? "<img src='" + SERVER + points[i].img + "'>" : "";
+          html += "<span class='point' style='" + style + "' " + onclick + ">"+img+"</span>";
+
         }
         html += "</div>"
         html += "</div>"
