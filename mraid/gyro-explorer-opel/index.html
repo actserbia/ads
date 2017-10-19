@@ -55,8 +55,10 @@
 
   // PARAMETERS FOR TRACKING
   tracking = {
-    gaID: 'UA-26097452-1',  // Google Analytics Tracking Id
-    gaEventCategory: "Inter_Gyro_Explorer_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+    gaID: 'UA-92068038-21',  // Google Analytics Tracking Id
+    gaEventCategory: "Gyro", // Google Analytics Event Category
+    dimension1: "Opel",
+    dimension2: "allociné_android_phone"
   }
 
   //
@@ -76,7 +78,7 @@
 
   <script src="mraid.js"></script>
 
-  <!-- Global Site Tag (gtag.js) - Google Analytics -->
+  <!-- Global Site Tag (gtag.js) - Google Analytics // https://developers.google.com/analytics/devguides/collection/gtagjs/events -->
   <script>
   document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
   </script>
@@ -84,7 +86,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments)};
   gtag('js', new Date());
-  gtag('config', tracking.gaID);
+  gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
   </script>
 
 
@@ -240,9 +242,10 @@
         for (var i=0; i < points.length; i++ ) {
           window.actions[i] = function(j){
             gtag('event', 'click', { // event_action
-              'value': j,
               'event_category': tracking.gaEventCategory,
-              'event_label': "target-"+j
+              'event_label': "target"+j,
+              'dimension1': tracking.dimension1,
+              'dimension2': tracking.dimension2
             });
             mraid.open(points[j].url);
           };
