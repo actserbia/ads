@@ -18,12 +18,12 @@
   // MAIN IMAGE
   mainImgs = {
     mob: {
-      land: "assets/img/Smartphone_3240x1920.jpg",
-      port: "assets/img/Smartphone_2160x1920.jpg"
+      port: "assets/img/smartphone_1632x960.jpg",
+      land: "assets/img/wrong-orientation-1024.jpg"
     },
     tab: {
-      land: "assets/img/Tab_Paysage_6144x1536.jpg" ,
-      port: "assets/img/Tab_Portrait_4608x2048.jpg"
+      port: "assets/img/smartphone_1632x960.jpg",
+      land: "assets/img/wrong-orientation-1024.jpg"
     }
   }
 
@@ -136,13 +136,19 @@
     height: 100%;
     overflow: hidden;
     overflow-x: scroll;
+    background-color: black;
 
   }
   #driver {
     position: relative;
     height: 100%;
-
     float: left;
+    text-align: center;
+  }
+
+  #cover.deficient-img #driver {
+    display: inline-block;
+    float: none;
   }
   #main-image {
     height: 100%;
@@ -164,8 +170,8 @@
     -webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
     transform: translate(-50%, -50%);
     display: block;
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 40%;
+    max-height: 40%;
     z-index: 999;
     -webkit-transition: all .4s;
     transition: all .4s;
@@ -209,7 +215,16 @@
   (function(){
 
     function center(){
-      document.getElementById('cover').scrollLeft = (document.getElementById('driver').offsetWidth - document.getElementById('cover').offsetWidth) / 2;
+      var cover = document.getElementById('cover');
+      var coverW = cover.offsetWidth;
+      var driverW = document.getElementById('driver').offsetWidth;
+      if (coverW > driverW) {
+        cover.className = "deficient-img";
+      }
+      else {
+        cover.className = "";
+        document.getElementById('cover').scrollLeft = (driverW - coverW) / 2;
+      }
     }
 
 
@@ -284,7 +299,7 @@
       document.getElementById("ad-wrap-wrap").appendChild(explainingImgObj);
       setTimeout(function(){
         explainingImgObj.className = "hidden";
-      }, 3000);
+      }, 8000);
     });
     explainingImgObj.src = SERVER + explainingImg;
 
