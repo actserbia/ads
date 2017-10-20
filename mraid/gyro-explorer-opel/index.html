@@ -34,16 +34,32 @@
     mob: {
       port: [
         {
-          x: '50%',
+          x: '16.67%',
           y: '50%',
-          url: 'http://google.com',
+          label: "left", // used for tracking
+          url: 'https://www.google.rs/search?q=left',
           //img: 'assets/img/touch_point.png',
-          extraStyles: "width:100%; height:100%;"
+          extraStyles: "width:33.33%; height:100%;"
         },
         {
           x: '50%',
           y: '50%',
-          url: 'http://yahoo.com',
+          label: "center", // used for tracking
+          url: 'https://www.google.rs/search?q=center',
+          //img: 'assets/img/touch_point.png',
+          extraStyles: "width:33.33%; height:100%;"
+        },
+        {
+          x: '83.34%',
+          y: '50%',
+          label: "right", // used for tracking
+          url: 'http://google.com?q=right',
+          //img: 'assets/img/touch_point.png',
+          extraStyles: "width:33.33%; height:100%;"
+        },
+        {
+          x: '50%',
+          y: '50%',
           unclickable: true,
           extraStyles: "width: 15%; height:24%;"
         }
@@ -51,27 +67,9 @@
       land:[
       ]
     },
-    tab: {
-      port: [
-        {
-          x: '50%',
-          y: '50%',
-          url: 'http://google.com',
-          //img: 'assets/img/touch_point.png',
-          extraStyles: "width:100%; height:100%;"
-        },
-        {
-          x: '50%',
-          y: '50%',
-          url: 'http://yahoo.com',
-          unclickable: true,
-          extraStyles: "width: 15%; height:24%;"
-        }
-      ],
-      land:[
-      ]
-    }
-  }
+    tab: "same as mob --> tab is defined below by cloning mob"
+  };
+  points.tab = JSON.parse(JSON.stringify(points.mob));
 
   // PARAMETERS FOR TRACKING
   tracking = {
@@ -260,12 +258,11 @@
         html += "<div id='cover'>";
         html += "<div id='driver'>";
         for (var i=0; i < points.length; i++ ) {
-
           if (!points[i].unclickable) {
             window.actions[i] = function(j){
               gtag('event', 'click', { // event_action
                 'event_category': tracking.gaEventCategory,
-                'event_label': "target"+j,
+                'event_label': points[j].label,
                 'dimension1': tracking.dimension1,
                 'dimension2': tracking.dimension2
               });
@@ -287,9 +284,9 @@
         setTimeout(center, 50);
         setTimeout(center, 100);
         setTimeout(center, 200);
-        //if (document.getElementById("cover").style.scrollBehavior) {
-        //  document.getElementById("cover").style.scrollBehavior = 'smooth';
-        //}
+        if (document.getElementById("cover").style.scrollBehavior) {
+          document.getElementById("cover").style.scrollBehavior = 'smooth';
+        }
         //disabling scroll
         document.getElementById('driver').addEventListener('touchmove', function(ev){
           ev.preventDefault();
@@ -377,9 +374,34 @@
       });
 
 
+      function tracking(evAction, evLabel) {
+        window.actions[i] = function(j){
+          gtag('event', evAction, { // event_action
+            'event_category': tracking.gaEventCategory,
+            'event_label': evLabel,
+            'dimension1': tracking.dimension1,
+            'dimension2': tracking.dimension2
+          });
+        };
+      }
+
+      var lastSector = false;
+      var sector = "center";
       var scroll = function(offset){
         var currentScroll = document.getElementById('cover').scrollLeft;
         document.getElementById('cover').scrollLeft = currentScroll + Math.pow(offset/2, 3);
+        // tracking
+        var center = (document.getElementById('driver').offsetWidth - document.getElementById('cover').offsetWidth) / 2;
+        var position = currentScroll - center;
+        var trashold = document.getElementById('driver').offsetWidth * 0.025;
+        if ( (position < 0 - trashold) && (lastSector !== "left") ) {
+          lastSector = "left";
+          tracking("tilt", "left");
+        }
+        if ( (position > 0 + trashold) && (lastSector) !== "right") {
+          lastSector = "right";
+          tracking("tilt", "right");
+        }
       }
 
 
@@ -401,7 +423,7 @@
                 scroll(-ori.x)
               }
             }
-            else {
+            else { // landscape
               var sign = Math.abs(ori.x)/ori.x;
 
               if (ori.y > 1) {
@@ -413,7 +435,7 @@
             }
           }
           catch(err){
-            console.log("gravity not supported ::");
+            console.log("gravity not supported :: " + err);
           }
         }, false);
       }
