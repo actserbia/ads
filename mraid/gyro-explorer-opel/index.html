@@ -287,7 +287,6 @@
         setTimeout(center, 50);
         setTimeout(center, 100);
         setTimeout(center, 200);
-
         //if (document.getElementById("cover").style.scrollBehavior) {
         //  document.getElementById("cover").style.scrollBehavior = 'smooth';
         //}
@@ -302,9 +301,7 @@
     // helper methods
     deviceType = new UAParser().getDevice().type;
     getOrient = function(){
-      var orient = ((window.innerWidth / window.innerHeight) > 1) ? "land" : "port";
-      document.getElementById('ad-wrap').className = orient;
-      return orient;
+      return document.getElementById('ad-wrap').className;
     }
     selectImg = function() {
       if (deviceType === "tablet") {
@@ -323,6 +320,38 @@
       }
     }
 
+
+    // orientation change triggering
+    document.getElementById('ad-wrap').className = ((window.innerWidth / window.innerHeight) > 1) ? "land" : "port";
+    render(selectImg(), selectPoints());
+    if (!!window.matchMedia){
+      var watchPort = window.matchMedia("(orientation: portrait)");
+
+      // Add a media query change listener
+      watchPort.addListener(function(m) {
+      	if(m.matches) {
+      		document.getElementById('ad-wrap').className = "port";
+          render(selectImg(), selectPoints());
+      	}
+      	else {
+      		document.getElementById('ad-wrap').className = "land";
+          render(selectImg(), selectPoints());
+      	}
+      });
+    }
+    else {
+      lastOrient = ((window.innerWidth / window.innerHeight) > 1) ? "land" : "port";
+      window.addEventListener("resize", function(){
+        var newOrient = ((window.innerWidth / window.innerHeight) > 1) ? "land" : "port";
+        if (lastOrient !== newOrient) {
+          lastOrient = newOrient;
+          document.getElementById('ad-wrap').className = newOrient;
+          render(selectImg(), selectPoints());
+        }
+      });
+    }
+
+
     // explaining image trigger
     window.explainingImgObj = new Image();
     explainingImgObj.id = "explaining-img";
@@ -333,16 +362,6 @@
       }, 8000);
     });
     explainingImgObj.src = SERVER + explainingImg;
-
-    // orientation change trigger
-    render(selectImg(), selectPoints());
-    lastOrient = getOrient();
-    window.addEventListener("resize", function(){
-      if (lastOrient !== getOrient()) {
-        lastOrient = getOrient()
-        render(selectImg(), selectPoints());
-      }
-    });
 
 
 
@@ -367,9 +386,7 @@
       if (window.DeviceMotionEvent) {
         window.addEventListener("devicemotion", function (ev) {
           try {
-            console.log(ev.accelerationIncludingGravity);
             var aig = ev.accelerationIncludingGravity;
-
             var ori = {
               x:parseFloat(aig.x.toFixed(2)),
               y:parseFloat(aig.y.toFixed(2)),
@@ -400,10 +417,9 @@
           }
         }, false);
       }
-
-
-
     }
+
+
 
     if (mraid.getState() === 'loading') {
       mraid.addEventListener('ready', showMRAIDAd);
@@ -411,7 +427,11 @@
       showMRAIDAd();
     }
 
+
+
   })();
+
+
 
   </script>
 
