@@ -98,18 +98,26 @@
 
   <!-- Global Site Tag (gtag.js) - Google Analytics // https://developers.google.com/analytics/devguides/collection/gtagjs/events -->
   <script>
-  document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
   </script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments)};
-  gtag('js', new Date());
-  gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
+    function tracking(evAction, evLabel) {
+        gtag('event', evAction, { // event_action
+          'event_category': tracking.gaEventCategory,
+          'event_label': evLabel,
+          'dimension1': tracking.dimension1,
+          'dimension2': tracking.dimension2
+        });
+    }
   </script>
 
 
   <script>
-  if(location.hash.indexOf("web") !== -1){
+  if (location.hash.indexOf("web") !== -1) {
     mraid = {};
     mraid.getState = function(){return "loaded";};
     mraid.useCustomClose = function(){};
@@ -260,12 +268,7 @@
         for (var i=0; i < points.length; i++ ) {
           if (!points[i].unclickable) {
             window.actions[i] = function(j){
-              gtag('event', 'click', { // event_action
-                'event_category': tracking.gaEventCategory,
-                'event_label': points[j].label,
-                'dimension1': tracking.dimension1,
-                'dimension2': tracking.dimension2
-              });
+              tracking('click', points[j].label);
               mraid.open(points[j].url);
             };
           }
@@ -288,9 +291,11 @@
           document.getElementById("cover").style.scrollBehavior = 'smooth';
         }
         //disabling scroll
-        document.getElementById('driver').addEventListener('touchmove', function(ev){
-          ev.preventDefault();
-        }, false);
+        if (location.hash.indexOf("swipe") === -1) {
+          document.getElementById('driver').addEventListener('touchmove', function(ev){
+            ev.preventDefault();
+          }, false);
+        }
       }, false);
       mainImgObj.src = SERVER + mainImg;
     }
@@ -326,7 +331,7 @@
 
       // Add a media query change listener
       watchPort.addListener(function(m) {
-      	if(m.matches) {
+      	if (m.matches) {
       		document.getElementById('ad-wrap').className = "port";
           render(selectImg(), selectPoints());
       	}
@@ -374,16 +379,6 @@
       });
 
 
-      function tracking(evAction, evLabel) {
-        window.actions[i] = function(j){
-          gtag('event', evAction, { // event_action
-            'event_category': tracking.gaEventCategory,
-            'event_label': evLabel,
-            'dimension1': tracking.dimension1,
-            'dimension2': tracking.dimension2
-          });
-        };
-      }
 
       var lastSector = false;
       var sector = "center";
