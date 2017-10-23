@@ -105,7 +105,7 @@
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
     gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
-    function tracking(evAction, evLabel) {
+    window.tracking = function(evAction, evLabel) {
         gtag('event', evAction, { // event_action
           'event_category': tracking.gaEventCategory,
           'event_label': evLabel,
