@@ -105,7 +105,7 @@
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
     gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
-    window.tracking = function(evAction, evLabel) {
+    window.trackingEv = function(evAction, evLabel) {
         gtag('event', evAction, { // event_action
           'event_category': tracking.gaEventCategory,
           'event_label': evLabel,
@@ -268,7 +268,7 @@
         for (var i=0; i < points.length; i++ ) {
           if (!points[i].unclickable) {
             window.actions[i] = function(j){
-              tracking('click', points[j].label);
+              trackingEv('click', points[j].label);
               mraid.open(points[j].url);
             };
           }
@@ -391,11 +391,11 @@
         var trashold = document.getElementById('driver').offsetWidth * 0.025;
         if ( (position < 0 - trashold) && (lastSector !== "left") ) {
           lastSector = "left";
-          tracking("tilt", "left");
+          trackingEv("tilt", "left");
         }
         if ( (position > 0 + trashold) && (lastSector) !== "right") {
           lastSector = "right";
-          tracking("tilt", "right");
+          trackingEv("tilt", "right");
         }
       }
 
