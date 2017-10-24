@@ -284,8 +284,9 @@
         document.getElementById("ad-wrap").innerHTML = html;
         document.getElementById("driver").appendChild(mainImgObj);
         var centerFixItv = setInterval(function(){
-          var w = document.getElementById("main-image").offsetWidth;
-          if (w > 50) {
+          var iw = document.getElementById("main-image").offsetWidth;
+          var cv = document.getElementById("cover").offsetWidth;
+          if (iw > 50 && iw > 50) {
             center();
             clearInterval(centerFixItv);
           }
