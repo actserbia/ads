@@ -283,10 +283,13 @@
         html += "</div>"
         document.getElementById("ad-wrap").innerHTML = html;
         document.getElementById("driver").appendChild(mainImgObj);
-        center();
-        setTimeout(center, 100);
-        setTimeout(center, 500);
-        setTimeout(center, 1000);
+        var centerFixItv = setInterval(function(){
+          var w = document.getElementById("main-image").offsetWidth;
+          if (w > 50) {
+            center();
+            clearInterval(centerFixItv);
+          }
+        }, 100);
         if (document.getElementById("cover").style.scrollBehavior) {
           document.getElementById("cover").style.scrollBehavior = 'smooth';
         }
