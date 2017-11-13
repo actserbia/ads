@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script>
+
+  // BASE URL PATH FOR FILES
+  var SERVER = "http://ads.diwanee.com/mraid/swipe-cube/";
+  /*                                                 ---->  in this line is for DEVELOPMENT :: no need for editing ---->  */ SERVER = (location.host.indexOf("ads.diwanee.com") !== -1) ? "http://ads.diwanee.com/mraid/swipe-cube/" : SERVER;;;;;;;;;;;;; SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER;
+
+  // IMAGE ITEMS FOR SLIDER
+  items = {
+    center: SERVER + "assets/img/content/1.jpg",
+    top: SERVER + "assets/img/content/3.jpg",
+    right: SERVER + "assets/img/content/4.jpg",
+    bottom: SERVER + "assets/img/content/5.jpg",
+    left: SERVER + "assets/img/content/2.jpg"
+  }
+
+  // URL FOR CLICK ACTION
+  //clickURL = "http://allocine.com/" // empty url disabling click action
+
+  // NAVIGATION IMAGE
+  arrowImage = SERVER + "assets/img/ui/arrow.png";
+
+  // PARAMETERS FOR TRACKING
+  tracking = {
+    //gaID: 'UA-92068038-21',  // Google Analytics Tracking Id
+    //gaEventCategory: "Inter_Swipe_Cube_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
+  }
+
+  //
+  // ! ! ! W A R N I N G ! ! !
+  // IAS SOURCES FOR PIXEL TRACKING
+  // SHOULD BE SET AT THE END OF THIS DOCUMENT
+  //
+
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swipe Cube MRAID</title>
+
+  <script src="mraid.js"></script>
+
+  <!-- Global Site Tag (gtag.js) - Google Analytics // https://developers.google.com/analytics/devguides/collection/gtagjs/events -->
+  <script>
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id='+tracking.gaID+'"><\/script>');
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', tracking.gaID);
+  </script>
+
+  <script>
+  if (location.hash.indexOf('web')!==-1) {
+    mraid = {};
+    mraid.getState = function(){return "loaded";};
+    mraid.useCustomClose = function(){};
+    mraid.open = function(url){window.open(url);};
+    mraid.setOrientationProperties = function(){};
+    mraid.close = function(){
+      var adWrap = document.getElementById('ad-wrap');
+      adWrap.style.display = "none";
+      document.body.style.backgroundColor = "blue"
+    }
+  }
+  </script>
+
+  <style>
+  * {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  html {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #ad-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  #driver {
+    width: 300%;
+    height: 300%;
+    -webkit-transition: top .7s, left .7s, transform .7s ease;
+    transition:  top .7s, left .7s, transform .7s ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+  .center #driver {
+    -ms-transform: translate3d(-33.33%, -33.33%, 0);
+    -webkit-transform: translate3d(-33.33%, -33.33%, 0);
+    transform: translate3d(-33.33%, -33.33%, 0);
+  }
+  .top #driver {
+    -ms-transform: translate3d(-33.33%, -0%, 0);
+    -webkit-transform: translate3d(-33.33%, -0%, 0);
+    transform: translate3d(-33.33%, -0%, 0);
+  }
+  .right #driver {
+    -ms-transform: translate3d(-66.66%, -33.33%, 0);
+    -webkit-transform: translate3d(-66.66%, -33.33%, 0);
+    transform: translate3d(-66.66%, -33.33%, 0);
+  }
+  .bottom #driver {
+    -ms-transform: translate3d(-33.33%, -66.66%, 0);
+    -webkit-transform: translate3d(-33.33%, -66.66%, 0);
+    transform: translate3d(-33.33%, -66.66%, 0);
+  }
+  .left #driver {
+    -ms-transform: translate3d(0%, -33.33%, 0);
+    -webkit-transform: translate3d(0%, -33.33%, 0);
+    transform: translate3d(0%, -33.33%, 0);
+  }
+  .item {
+    position: absolute;
+    width: 33.34%;
+    height: 33.34%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+  }
+  .item > div {
+    width: 100%;
+    height: 100%;
+  }
+  .item-center {
+    top: 33.3333%;
+    left: 33.3333%;
+  }
+  .item-top {
+    top: 0%;
+    left: 33.3333%;
+  }
+  .item-right {
+    top: 33.3333%;
+    left: 66.6666%;
+  }
+  .item-bottom {
+    top: 66.6666%;
+    left: 33.3333%;
+  }
+  .item-left {
+    top: 33.3333%;
+    left: 0%;
+  }
+  .arrow {
+    width: 50px;
+    height: 50px;
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    z-index: 10;
+  }
+  #arrow-top {
+    top: 0%;
+    left: 50%;
+    -ms-transform: translateX(-50%) rotate(-90deg);
+    -webkit-transform: translateX(-50%) rotate(-90deg);
+    transform: translateX(-50%) rotate(-90deg);
+  }
+  #arrow-right {
+    top: 50%;
+    right: 0%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  #arrow-bottom {
+    bottom: 0;
+    left: 50%;
+    -ms-transform: translateX(-50%) rotate(90deg);
+    -webkit-transform: translateX(-50%) rotate(90deg);
+    transform: translateX(-50%) rotate(90deg);
+  }
+  #arrow-left {
+    top: 50%;
+    left: 0%;
+    -ms-transform: translateY(-50%) rotate(180deg);
+    -webkit-transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);
+  }
+  .arrow {
+    display: none;
+  }
+  .center .arrow {
+    display: block;
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="ad-wrap">
+  </div>
+
+  <script>
+
+  (function(){
+
+    var html = "";
+    html += "<div id='cover' class='center'>";
+    html += " <div id='arrow-top' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-right' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-bottom' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='arrow-left' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
+    html += " <div id='driver'>";
+    html += "  <div class='item item-center'><div style='background-image:url("+ items.center +");'></div></div>";
+    html += "  <div class='item item-top'><div style='background-image:url("+ items.top +");'></div></div>";
+    html += "  <div class='item item-right'><div style='background-image:url("+ items.right +");'></div></div>";
+    html += "  <div class='item item-bottom'><div style='background-image:url("+ items.bottom +");'></div></div>";
+    html += "  <div class='item item-left'><div style='background-image:url("+ items.left +");'></div></div>";
+    html += " </div>";
+    html += "</div>";
+
+    document.getElementById("ad-wrap").innerHTML = html;
+
+    //
+    // N A V I G A T I O N
+    //
+
+    var cvr = document.getElementById("cover");
+    var drv = document.getElementById("driver");
+    var go = {};
+
+    var goTo = function(direction) {
+      go[direction]();
+      //goTo = function(){};
+    }
+
+
+
+    var sudoku = function(){
+      var position = cvr.className;
+      drv.style.transition = "all 0s"
+      drv.style.WebkitTransition = "all 0s"
+      switch (position) {
+        case "left" :
+          var toC = document.getElementsByClassName('item-left')[0];
+          var toL = document.getElementsByClassName('item-right')[0];
+          var toR = document.getElementsByClassName('item-center')[0];
+          toC.setAttribute("class", 'item item-center');
+          toL.setAttribute("class", 'item item-left');
+          toR.setAttribute("class", 'item item-right');
+          break;
+        case "right" :
+          var toC = document.getElementsByClassName('item-right')[0];
+          var toL = document.getElementsByClassName('item-center')[0];
+          var toR = document.getElementsByClassName('item-left')[0];
+          toC.setAttribute("class", 'item item-center');
+          toL.setAttribute("class", 'item item-left');
+          toR.setAttribute("class", 'item item-right');
+          break;
+        case "top" :
+          var toC = document.getElementsByClassName('item-top')[0];
+          var toT = document.getElementsByClassName('item-bottom')[0];
+          var toB = document.getElementsByClassName('item-center')[0];
+          toC.setAttribute("class", 'item item-center');
+          toT.setAttribute("class", 'item item-top');
+          toB.setAttribute("class", 'item item-bottom');
+          break;
+        case "bottom" :
+          var toC = document.getElementsByClassName('item-bottom')[0];
+          var toT = document.getElementsByClassName('item-center')[0];
+          var toB = document.getElementsByClassName('item-top')[0];
+          toC.setAttribute("class", 'item item-center');
+          toT.setAttribute("class", 'item item-top');
+          toB.setAttribute("class", 'item item-bottom');
+          break;
+      }
+      cvr.setAttribute("class", 'center');
+      setTimeout(function(){
+        drv.removeAttribute('style');
+      },0);
+    }
+    document.getElementById("driver").addEventListener("webkitTransitionEnd", sudoku);
+    document.getElementById("driver").addEventListener("transitionend", sudoku);
+
+
+
+    go.top = function(){
+      switch (cvr.className) {
+        case "bottom":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'top';
+          break;
+      }
+    }
+    go.right = function(){
+      switch (cvr.className) {
+        case "left":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'right';
+          break;
+      }
+    }
+    go.bottom = function(){
+      switch (cvr.className) {
+        case "top":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'bottom';
+          break;
+      }
+    }
+    go.left = function(){
+      switch (cvr.className) {
+        case "right":
+          cvr.className = 'center';
+          break;
+        case "center":
+          cvr.className = 'left';
+          break;
+      }
+    }
+
+    //document.getElementById('arrow-top').addEventListener('click', goTop)
+    //document.getElementById("arrow-right").addEventListener('click', goRight);
+    //document.getElementById("arrow-bottom").addEventListener('click', goBottom);
+    //document.getElementById("arrow-left").addEventListener('click', goLeft);
+
+
+    document.getElementById('cover').addEventListener('click', function(){
+      if (!!clickURL && clickURL !== "") {
+        gtag('event', 'click', { // event_action
+          //'value': index,
+          'event_category': tracking.gaEventCategory,
+          'event_label': "ClickURL"
+        });
+        mraid.open(clickURL);
+      }
+    });
+
+    // S W I P E   D E T E  C T I O N
+    var gesuredZone = document.getElementById('driver');
+    var tStartX = 0;
+    var tStartY = 0;
+    var tEndX = 0;
+    var tEndY = 0;
+    var tTimer = 0;
+    window.lastPosition = "";
+    var swipeResolver = function(){
+      if ( Math.abs(tStartX-tEndX) > Math.abs(tStartY-tEndY) ) {
+        if ((tStartX-tEndX) > 0){
+          goTo('right');
+        }
+        if ((tStartX-tEndX) < 0){
+          goTo('left');
+        }
+        clearInterval(tTimer);
+      }
+      if ( Math.abs(tStartX-tEndX) < Math.abs(tStartY-tEndY) ) {
+        if ((tStartY-tEndY) > 0){
+          goTo('bottom');
+        }
+        if ((tStartY-tEndY) < 0){
+          goTo('top');
+        }
+        clearInterval(tTimer);
+      }
+      var position = document.getElementById('cover').className;
+      if (position !== window.lastPosition) {
+        window.lastPosition = position;
+        gtag('event', 'swipe', { // event_action
+          //'value': position,
+          'event_category': tracking.gaEventCategory,
+          'event_label': position
+        });
+      }
+    }
+    gesuredZone.addEventListener('touchstart', function(ev) {
+        //ev.preventDefault();
+        tStartX = tEndX = ev.changedTouches[0].screenX;
+        tStartY = tEndY = ev.changedTouches[0].screenY;
+        clearInterval(tTimer);
+        tTimer = setInterval(swipeResolver ,25);
+    }, false);
+    gesuredZone.addEventListener('touchmove', function(ev) {
+        //ev.preventDefault();
+        tEndX = ev.changedTouches[0].screenX;
+        tEndY = ev.changedTouches[0].screenY;
+    }, false);
+    gesuredZone.addEventListener('touchend', function(ev) {
+        //ev.preventDefault();
+        clearInterval(tTimer);
+    }, false);
+
+  })();
+
+  //
+  // M R A I D
+  //
+
+  function showMRAIDAd() {
+    mraid.useCustomClose(false);
+    mraid.setOrientationProperties({
+      //"allowOrientationChange" : false,
+      "forceOrientation" : "portrait"
+    });
+  }
+
+  if (mraid.getState() === 'loading') {
+    mraid.addEventListener('ready', showMRAIDAd);
+  } else {
+    showMRAIDAd();
+  }
+
+  </script>
+
+
+
+    <!--
+    // IAS SOURCES FOR PIXEL TRACKING-->
+    <script
+       src="http://pixel.adsafeprotected.com/rjss/st/115679/19012727/skeleton.js" type="application/javascript"></script>
+    <noscript><img
+      src="http://pixel.adsafeprotected.com/rfw/st/115679/19012726/skeleton.gif" border=0 width=1 height=1 alt=""></noscript>
+
+
+
+</body>
+
+</html>
