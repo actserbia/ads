@@ -9,32 +9,61 @@
   var SERVER = "http://ads.diwanee.com/mraid/swipe-cube-nina_ricci/";
   /*                                                 ---->  in this line is for DEVELOPMENT :: no need for editing ---->  */ SERVER = (location.host.indexOf("ads.diwanee.com") !== -1) ? "http://ads.diwanee.com/mraid/swipe-cube-nina_ricci/" : SERVER;;;;;;;;;;;;; SERVER = (location.hash.indexOf("local") !== -1) ? "" : SERVER;
 
-  // IMAGE ITEMS FOR SLIDER
-  items = {
-    center: SERVER + "assets/img/content/1.jpg",
-    top: SERVER + "assets/img/content/3.jpg",
-    right: SERVER + "assets/img/content/4.jpg",
-    bottom: SERVER + "assets/img/content/5.jpg",
-    left: SERVER + "assets/img/content/2.jpg"
-  }
 
-  // URL FOR CLICK ACTION
-  //clickURL = "http://allocine.com/" // empty url disabling click action
+  /*
+  *
+  * N O T I C E :: Elements are named by theri positions on initialization
+  *
+  */
+
+
+  // BACKGROUND IMAGE ITEMS FOR SLIDES
+  bgItems = {
+    center: SERVER + "assets/img/content/1.gif",
+    top: SERVER + "assets/img/content/3.gif",
+    right: SERVER + "assets/img/content/4.gif",
+    bottom: SERVER + "assets/img/content/5.gif",
+    left: SERVER + "assets/img/content/2.gif"
+  }
+  // CUSTOM HTML FOR SLIDES
+  htmlItems = {
+    center: "<h1>This is some custom HTML</h1>",
+    top: "<h2>Another custom HTML</h2>",
+    right: "<img src='http://via.placeholder.com/250x150'>",
+    bottom: "",
+    left: "",
+  }
+  // CTA LINKS FOR SLIDES
+  cta = {
+    center: "https://www.google.rs/search?q=center",
+    top: "https://www.google.rs/search?q=top",
+    right: "https://www.google.rs/search?q=right",
+    bottom: "https://www.google.rs/search?q=bottom",
+    left: "https://www.google.rs/search?q=left",
+  }
 
   // NAVIGATION IMAGE
-  arrowImage = SERVER + "assets/img/ui/arrow.png";
+  arrowImage = SERVER + "assets/img/ui/right-angle.svg";
 
-  // PARAMETERS FOR TRACKING
-  tracking = {
-    //gaID: 'UA-92068038-21',  // Google Analytics Tracking Id
-    //gaEventCategory: "Inter_Swipe_Cube_001", // Google Analytics Event Category (Nomenclature : use the nomenclature Type_Template_Campaign)
-  }
+  // WRONG ORIENTATION FALLBACK IMAGE
+  orientation = SERVER + "assets/img/ui/rotate.png";
+
+  //  PICTOGRAM EXPLAINING THE POSSIBLE INTERACTION WITH THE FORMAT
+  explain = SERVER + "assets/img/ui/explaining-pictogram.png";
 
   //
   // ! ! ! W A R N I N G ! ! !
   // IAS SOURCES FOR PIXEL TRACKING
   // SHOULD BE SET AT THE END OF THIS DOCUMENT
   //
+  //
+  // PARAMETERS FOR TRACKING ::
+  tracking = {
+    gaID: 'UA-92068038-21',  // Google Analytics Tracking Id
+    gaEventCategory: "Swol", // Google Analytics Event Category
+    dimension1: "Nina_Ricci",
+    dimension2: "allociné_android_phone"
+  }
 
   </script>
 
@@ -52,8 +81,22 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
-    gtag('config', tracking.gaID);
-  </script>
+    gtag('config', tracking.gaID, {dimension1: tracking.dimension1, dimension2: tracking.dimension2});
+    window.trackingEv = function(evAction, evLabel) {
+      /*
+        console.log('---------')
+        console.log(evAction)
+        console.log(evLabel)
+       */ 
+        gtag('event', evAction, { // event_action
+          'event_category': tracking.gaEventCategory,
+          'event_label': evLabel,
+          'dimension1': tracking.dimension1,
+          'dimension2': tracking.dimension2
+        });
+
+    }
+    </script>
 
   <script>
   if (location.hash.indexOf('web')!==-1) {
@@ -209,6 +252,30 @@
   .center .arrow {
     display: block;
   }
+  #orientation {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+  }
+  #orientation.wrong {
+    display: block;
+  }
+  #explain {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    z-index: 30;
+  }
+  #explain.ended {
+    display: none;
+  }
 
   </style>
 
@@ -230,14 +297,15 @@
     html += " <div id='arrow-bottom' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
     html += " <div id='arrow-left' class='arrow' style='background-image:url("+ arrowImage +");'></div>";
     html += " <div id='driver'>";
-    html += "  <div class='item item-center'><div style='background-image:url("+ items.center +");'></div></div>";
-    html += "  <div class='item item-top'><div style='background-image:url("+ items.top +");'></div></div>";
-    html += "  <div class='item item-right'><div style='background-image:url("+ items.right +");'></div></div>";
-    html += "  <div class='item item-bottom'><div style='background-image:url("+ items.bottom +");'></div></div>";
-    html += "  <div class='item item-left'><div style='background-image:url("+ items.left +");'></div></div>";
+    html += "  <div data-id='1' data-name='center' data-cta="+cta.center+" class='item item-center'><div style='background-image:url("+ bgItems.center +");'>" + htmlItems.center + "</div></div>";
+    html += "  <div data-id='3' data-name='top' data-cta="+cta.top+" class='item item-top'><div style='background-image:url("+ bgItems.top +");'>" + htmlItems.top + "</div></div>";
+    html += "  <div data-id='4' data-name='right' data-cta="+cta.right+" class='item item-right'><div style='background-image:url("+ bgItems.right +");'>" + htmlItems.right + "</div></div>";
+    html += "  <div data-id='5' data-name='bottom' data-cta="+cta.bottom+" class='item item-bottom'><div style='background-image:url("+ bgItems.bottom +");'>" + htmlItems.bottom + "</div></div>";
+    html += "  <div data-id='2' data-name='left' data-cta="+cta.left+" class='item item-left'><div style='background-image:url("+ bgItems.left +");'>" + htmlItems.left + "</div></div>";
     html += " </div>";
     html += "</div>";
-
+    html += "<img id='orientation' src='"+ orientation +"'>";
+    html += "<img id='explain' src='"+ explain +"'>";
     document.getElementById("ad-wrap").innerHTML = html;
 
     //
@@ -252,8 +320,6 @@
       go[direction]();
       //goTo = function(){};
     }
-
-
 
     var sudoku = function(){
       var position = cvr.className;
@@ -297,11 +363,11 @@
       setTimeout(function(){
         drv.removeAttribute('style');
       },0);
+      //window.trackingEv('Swipe', 'slide-'+document.querySelector('.item.item-center').getAttribute('data-id'));
+      window.trackingEv('Swipe', position);
     }
     document.getElementById("driver").addEventListener("webkitTransitionEnd", sudoku);
     document.getElementById("driver").addEventListener("transitionend", sudoku);
-
-
 
     go.top = function(){
       switch (cvr.className) {
@@ -344,12 +410,31 @@
       }
     }
 
+    // C L I C K   N A V I G A T I O N
     //document.getElementById('arrow-top').addEventListener('click', goTop)
     //document.getElementById("arrow-right").addEventListener('click', goRight);
     //document.getElementById("arrow-bottom").addEventListener('click', goBottom);
     //document.getElementById("arrow-left").addEventListener('click', goLeft);
 
 
+
+    // CTA ACTIONS
+    var items = document.getElementsByClassName('item');
+
+    for(var i = 0; i<items.length; i++) {
+      (function(){
+        var item = items[i];
+        var url = item.getAttribute('data-cta');
+
+        item.addEventListener('click', function(){
+          mraid.open(url);
+          window.trackingEv('Click', 'slide-'+document.querySelector('.item.item-center').getAttribute('data-id'));
+        });
+      })();
+    }
+
+
+/*
     document.getElementById('cover').addEventListener('click', function(){
       if (!!clickURL && clickURL !== "") {
         gtag('event', 'click', { // event_action
@@ -357,10 +442,10 @@
           'event_category': tracking.gaEventCategory,
           'event_label': "ClickURL"
         });
-        mraid.open(clickURL);
+
       }
     });
-
+*/
     // S W I P E   D E T E  C T I O N
     var gesuredZone = document.getElementById('driver');
     var tStartX = 0;
@@ -391,11 +476,6 @@
       var position = document.getElementById('cover').className;
       if (position !== window.lastPosition) {
         window.lastPosition = position;
-        gtag('event', 'swipe', { // event_action
-          //'value': position,
-          'event_category': tracking.gaEventCategory,
-          'event_label': position
-        });
       }
     }
     gesuredZone.addEventListener('touchstart', function(ev) {
@@ -416,6 +496,31 @@
     }, false);
 
   })();
+
+  //
+  // O R I E N T A T I O N   D E T E C T I O N  FALLBACK
+  //
+  var resizeHandler = function(){
+    var oriPoster = document.getElementById('orientation');
+    if (window.innerWidth>window.innerHeight) {
+      oriPoster.className = "wrong";
+    }
+    else {
+      oriPoster.className = "";
+    }
+  }
+  window.onlaod = resizeHandler();
+  window.addEventListener('resize', resizeHandler);
+
+  //
+  // EXPLAINING PICTOGRAM DISAPIRANCE
+  //
+  var pictogram = document.getElementById('explain');
+  pictogram.addEventListener('load', function(){
+    setTimeout(function(){
+      pictogram.className = "ended";
+    }, 3000);
+  })
 
   //
   // M R A I D
